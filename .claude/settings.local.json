@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__plugin_figma_figma__get_design_context",
+      "mcp__plugin_figma_figma__get_screenshot",
+      "Bash(npx tsc:*)",
+      "Bash(gh api:*)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(npm install:*)",
+      "Bash(echo \"EXIT:$?\")",
+      "mcp__claude_ai_Figma__get_design_context",
+      "Read(//Users/vanyagorbachev/Desktop/**)"
+    ]
+  }
+}

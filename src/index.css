@@ -1,0 +1,158 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* ═══════════════════════════════════════
+   DESIGN TOKENS — CSS Variables
+   Source: Comfort.tokens.json (default)
+         + Tiny.tokens.json (data-mode="tiny")
+
+   Naming: token name without group prefix
+   e.g. gaps/gap-m → --gap-m
+        insets/inset-xl → --inset-xl
+        font-size/f-size-l → --f-size-l
+        line-heignt/f-lh-m → --f-lh-m (сохраняем оригинальную опечатку из токенов)
+   ═══════════════════════════════════════ */
+
+:root {
+  /* ── Colors ── */
+  --grey-0: #ffffff;
+  --grey-50: #f5f5f5;
+  --grey-100: #ebebeb;
+  --grey-150: #e0e0e0;
+  --grey-300: #c2c2c2;
+  --grey-400: #adadad;
+  --grey-500: #999999;
+  --grey-600: #7b7b7b;
+  --grey-700: #5e5e5e;
+  --grey-800: #404040;
+  --grey-850: #313131;
+  --purple-500: #9744eb;
+  --green-500: #00bd00;
+  --secondary-purple-500: #eadafb;
+  --secondary-purple-600: #dfc6f9;
+
+  /* ── Gaps — Comfort ── */
+  --gap-0: 0px;
+  --gap-3xs: 4px;
+  --gap-2xs: 8px;
+  --gap-xs: 12px;
+  --gap-s: 16px;
+  --gap-m: 32px;
+  --gap-l: 40px;
+
+  /* ── Paddings — Comfort ── */
+  --pad-s: 16px;
+  --pad-m: 24px;
+  --pad-l: 32px;
+
+  /* ── Insets — Comfort ── */
+  --inset-0: 0px;
+  --inset-2xs: 2px;
+  --inset-xs: 4px;
+  --inset-s: 8px;
+  --inset-m: 12px;
+  --inset-l: 16px;
+  --inset-xl: 24px;
+
+  /* ── Rounding — Comfort ── */
+  --round-xs: 10px;
+  --round-s: 12px;
+  --round-m: 16px;
+  --round-l: 24px;
+  --round-full: 99px;
+
+  /* ── Font Size — Comfort ── */
+  --f-size-xs: 14px;
+  --f-size-s: 16px;
+  --f-size-m: 18px;
+  --f-size-l: 20px;
+  --f-size-xl: 30px;
+  --f-size-2xl: 44px;
+
+  /* ── Line Height — одинаковые в обоих режимах ── */
+  --f-lh-s: 20px;
+  --f-lh-m: 24px;
+  --f-lh-l: 40px;
+  --f-lh-xl: 48px;
+}
+
+/* ═══════════════════════════════════════
+   MODE OVERRIDE — Tiny
+   Активируется через document.documentElement.dataset.mode = "tiny"
+   ═══════════════════════════════════════ */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(10px); }
+}
+
+/* ═══════════════════════════════════════
+   ODOMETER — переопределяем стили темы
+   ═══════════════════════════════════════ */
+
+/* Переопределяем только то, что odometer ставит сам:
+   font-family (Helvetica Neue → Inter) и line-height (1.1em → inherit).
+   font-weight / font-size / color НЕ трогаем — они не ставятся odometer'ом
+   и наш !important сломает tailwind-классы и inline style на том же элементе. */
+.odometer.odometer-theme-default,
+.odometer.odometer-auto-theme {
+  font-family: inherit !important;
+  line-height: inherit !important;
+  vertical-align: baseline !important;
+}
+
+/* Ускоряем анимацию до 0.15s (было 2s в теме) */
+.odometer.odometer-theme-default.odometer-animating-up .odometer-ribbon-inner,
+.odometer.odometer-auto-theme.odometer-animating-up .odometer-ribbon-inner {
+  transition: transform 0.15s ease-in-out !important;
+}
+.odometer.odometer-theme-default.odometer-animating-down .odometer-ribbon-inner,
+.odometer.odometer-auto-theme.odometer-animating-down .odometer-ribbon-inner {
+  transition: transform 0.15s ease-in-out !important;
+  transform: translateY(-100%);
+}
+.odometer.odometer-theme-default.odometer-animating-down.odometer-animating .odometer-ribbon-inner,
+.odometer.odometer-auto-theme.odometer-animating-down.odometer-animating .odometer-ribbon-inner {
+  transform: translateY(0) !important;
+}
+
+/* Точечный разделитель строк в PriceBox (round dots вместо border-dashed) */
+.price-row-dots {
+  background-image: radial-gradient(circle, #d6d6d6 1.5px, transparent 1.5px);
+  background-size: 8px 3px;
+  background-repeat: repeat-x;
+  background-position: bottom;
+}
+
+:root[data-mode='tiny'] {
+  --gap-2xs: 4px;
+  --gap-xs: 8px;
+  --gap-s: 12px;
+  --gap-m: 24px;
+  --gap-l: 32px;
+  --pad-s: 12px;
+  --pad-m: 16px;
+  --inset-s: 6px;
+  --inset-m: 8px;
+  --inset-l: 12px;
+  --inset-xl: 18px;
+  --round-xs: 6px;
+  --round-s: 8px;
+  --round-m: 10px;
+  --round-l: 14px;
+  --f-size-l: 18px;
+  --f-size-xl: 24px;
+  --f-size-2xl: 40px;
+}
