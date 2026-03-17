@@ -6,28 +6,25 @@ import { IcControl } from './IcControl'
 import { Ic } from './Ic'
 import { ToggleSection } from './ToggleSection'
 import type { PriceRow } from './PriceBox'
+import { calcAll, DEFAULT_CALC_PARAMS } from '../calc'
 import wallImg from '../img/picture=wall.png'
-import brandImg from '../img/picture=brand.png'
+import sofaImg from '../img/picture=sofa.png'
 import lumaImg from '../img/picture=luma.png'
 import cameraImg from '../img/picture=camera.png'
 import coinsImg from '../img/picture=coins.png'
+import toiletImg from '../img/picture=toilet.png'
 
 const AREA_PRESETS = [25, 35, 50, 75]
 const CONDITIONS = ['Косметика', 'White box', 'Бетон']
-const BASE_PRICE_PER_M2 = 5000
-const STATE_COEFF = [1.0, 1.8, 2.5]
-const LAYOUT_COEFF_FREE = 1.3
-
-const ROW_DEFS = [
-  { name: 'Стены и полы',        imageUrl: wallImg,   ratio: 0.40 },
-  { name: 'Мебель и брендинг',   imageUrl: brandImg,  ratio: 0.25 },
-  { name: 'Электрика и свет',    imageUrl: lumaImg,   ratio: 0.15 },
-  { name: 'Безопасность и IT',   imageUrl: cameraImg, ratio: 0.10 },
-  { name: 'Расходники и резерв', imageUrl: coinsImg,  ratio: 0.10 },
-]
 
 type StepOneProps = {
-  onLiveChange?: (data: { areaStr: string; freeLayout: boolean; rows: PriceRow[]; total: number }) => void
+  onLiveChange?: (data: {
+    areaStr: string
+    freeLayout: boolean
+    condition: number
+    rows: PriceRow[]
+    total: number
+  }) => void
 }
 
 export function StepOne({ onLiveChange }: StepOneProps) {
@@ -37,21 +34,37 @@ export function StepOne({ onLiveChange }: StepOneProps) {
 
   const area = Math.max(1, parseFloat(areaStr.replace(',', '.')) || 0)
 
-  const total = useMemo(
-    () => Math.round(area * BASE_PRICE_PER_M2 * STATE_COEFF[condition] * (freeLayout ? LAYOUT_COEFF_FREE : 1)),
-    [area, condition, freeLayout]
+  // WALLS по умолчанию: STATE=0 → 0 (только покраска), STATE≥1 → 1 (выровнять)
+  const defaultWalls = condition === 0 ? 0 : 1
+
+  const result = useMemo(
+    () => calcAll({
+      S: area,
+      state: condition,
+      freeLayout,
+      walls: defaultWalls,
+      ...DEFAULT_CALC_PARAMS,
+    }),
+    [area, condition, freeLayout, defaultWalls]
   )
 
   const rows: PriceRow[] = useMemo(
-    () => ROW_DEFS.map(r => ({ name: r.name, imageUrl: r.imageUrl, value: Math.round(total * r.ratio) })),
-    [total]
+    () => [
+      { name: 'Стены, полы, потолок', imageUrl: wallImg,   value: result.cat1    },
+      { name: 'Электрика и свет',     imageUrl: lumaImg,   value: result.cat2    },
+      { name: 'Безопасность и IT',    imageUrl: cameraImg, value: result.cat3    },
+      { name: 'Санузел',              imageUrl: toiletImg, value: result.cat4    },
+      { name: 'Мебель WB',            imageUrl: sofaImg,   value: result.cat5    },
+      { name: 'Резерв 12%',           imageUrl: coinsImg,  value: result.reserve },
+    ],
+    [result]
   )
 
   const onLiveChangeRef = useRef(onLiveChange)
   onLiveChangeRef.current = onLiveChange
   useEffect(() => {
-    onLiveChangeRef.current?.({ areaStr, freeLayout, rows, total })
-  }, [areaStr, freeLayout, total]) // rows пересчитывается при total
+    onLiveChangeRef.current?.({ areaStr, freeLayout, condition, rows, total: result.total })
+  }, [areaStr, freeLayout, condition, result.total]) // rows пересчитывается при result
 
   const handleDecrement = () => setAreaStr(String(Math.max(1, area - 1)))
   const handleIncrement = () => setAreaStr(String(area + 1))
@@ -104,11 +117,15 @@ export function StepOne({ onLiveChange }: StepOneProps) {
           </div>
 
           {/* Свободная планировка */}
-          <ToggleSection checked={freeLayout} onChange={setFreeLayout} />
+          <ToggleSection
+            checked={freeLayout}
+            onChange={setFreeLayout}
+            description="Включите, если помещение без комнат и нужна перегородка"
+          />
 
         </div>
       </div>
-      <div className="h-[24px]" />
+      <div className="h-[160px]" />
     </div>
   )
 }

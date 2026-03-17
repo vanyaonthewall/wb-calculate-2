@@ -113,14 +113,14 @@
   vertical-align: baseline !important;
 }
 
-/* Ускоряем анимацию до 0.15s (было 2s в теме) */
+/* Анимация цифр — 0.65s expo-out easing */
 .odometer.odometer-theme-default.odometer-animating-up .odometer-ribbon-inner,
 .odometer.odometer-auto-theme.odometer-animating-up .odometer-ribbon-inner {
-  transition: transform 0.15s ease-in-out !important;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 .odometer.odometer-theme-default.odometer-animating-down .odometer-ribbon-inner,
 .odometer.odometer-auto-theme.odometer-animating-down .odometer-ribbon-inner {
-  transition: transform 0.15s ease-in-out !important;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1) !important;
   transform: translateY(-100%);
 }
 .odometer.odometer-theme-default.odometer-animating-down.odometer-animating .odometer-ribbon-inner,

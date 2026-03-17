@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Toggle } from './Toggle'
 import { WorkItem } from './WorkItem'
 import { AnimatedPrice } from './AnimatedPrice'
@@ -8,11 +8,19 @@ export type WorkEntry = {
   price: number
 }
 
+export type WorkClickData = {
+  name: string
+  price: number
+  active: boolean
+  onActiveChange: (v: boolean) => void
+}
+
 type WorkContainerProps = {
   active?: boolean
   onToggle?: (v: boolean) => void
   works?: WorkEntry[]
   onTotalChange?: (total: number) => void
+  onWorkClick?: (data: WorkClickData) => void
 }
 
 /** Секция «Работа бригады» с тоглом и списком работ. */
@@ -21,8 +29,19 @@ export function WorkContainer({
   onToggle,
   works = [{ workName: 'Сборка металлического каркаса', price: 12000 }],
   onTotalChange,
+  onWorkClick,
 }: WorkContainerProps) {
-  const subTotal = works.reduce((sum, w) => sum + w.price, 0)
+  const [itemActive, setItemActive] = useState<boolean[]>(() => works.map(() => true))
+
+  // Синхронизируем itemActive при изменении длины works (сохраняем состояние существующих)
+  useEffect(() => {
+    setItemActive(prev => {
+      if (prev.length === works.length) return prev
+      return works.map((_, i) => prev[i] !== undefined ? prev[i] : true)
+    })
+  }, [works.length])
+
+  const subTotal = works.reduce((sum, w, i) => sum + (itemActive[i] !== false ? w.price : 0), 0)
 
   const onTotalChangeRef = useRef(onTotalChange)
   onTotalChangeRef.current = onTotalChange
@@ -31,12 +50,16 @@ export function WorkContainer({
     onTotalChangeRef.current?.(subTotal)
   }, [subTotal])
 
+  const handleItemActiveChange = useCallback((idx: number, v: boolean) => {
+    setItemActive(prev => prev.map((a, i) => i === idx ? v : a))
+  }, [])
+
   const titleColor = active ? 'var(--grey-850, #313131)' : 'var(--grey-500, #999999)'
   const priceColor = active ? 'var(--grey-850, #313131)' : 'var(--grey-500, #999999)'
 
   return (
     <div
-      className="flex flex-col gap-[var(--gap-s,16px)] px-[var(--pad-s,16px)] py-[var(--gap-s,16px)] w-full"
+      className="flex flex-col gap-[24px] px-[var(--pad-s,16px)] py-[var(--gap-s,16px)] w-full"
       style={{ backgroundColor: active ? 'var(--grey-0, white)' : 'var(--grey-100, #ebebeb)' }}
     >
       {/* Заголовок */}
@@ -58,9 +81,20 @@ export function WorkContainer({
       </div>
 
       {/* Список работ */}
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col gap-[var(--gap-xs,12px)] w-full">
         {works.map((w, i) => (
-          <WorkItem key={i} workName={w.workName} price={w.price} active={active} />
+          <WorkItem
+            key={i}
+            workName={w.workName}
+            price={w.price}
+            active={active && itemActive[i] !== false}
+            onClick={() => onWorkClick?.({
+              name: w.workName,
+              price: w.price,
+              active: active && itemActive[i] !== false,
+              onActiveChange: (v) => handleItemActiveChange(i, v),
+            })}
+          />
         ))}
       </div>
     </div>

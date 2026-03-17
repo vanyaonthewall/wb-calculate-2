@@ -1,33 +1,54 @@
+import { useState } from 'react'
 import { formatPrice } from '../utils'
+import { Ic } from './Ic'
+
+export type WorkClickData = {
+  name: string
+  price: number
+  active: boolean
+  onActiveChange: (v: boolean) => void
+}
 
 type WorkItemProps = {
   workName?: string
   price?: number
   active?: boolean
+  onClick?: () => void
 }
 
-/** Строка с названием работы и ценой. */
+/** Строка с названием работы, ценой и иконкой-шевроном. */
 export function WorkItem({
   workName = 'Сборка металлического каркаса',
   price = 0,
   active = true,
+  onClick,
 }: WorkItemProps) {
-  const textColor = active ? 'var(--grey-850, #313131)' : 'var(--grey-500, #999999)'
+  const [hovered, setHovered] = useState(false)
+  const textColor  = active ? 'var(--grey-850, #313131)' : 'var(--grey-500, #999999)'
+  const priceColor = active ? 'var(--grey-850, #313131)' : 'var(--grey-400, #adadad)'
 
   return (
-    <div className="flex items-start gap-[var(--gap-2xs,8px)] pb-[var(--gap-xs,12px)] w-full last:pb-0">
+    <button
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="flex items-start gap-[var(--gap-2xs,8px)] border-b border-[var(--grey-150,#e0e0e0)] last:border-b-0 pb-[var(--gap-xs,12px)] last:pb-0 w-full text-left cursor-pointer overflow-hidden"
+    >
       <p
-        className="flex-1 font-inter font-normal text-[length:var(--f-size-s,16px)] leading-[var(--f-lh-m,24px)] min-w-0"
+        className="flex-1 font-inter font-normal text-[length:var(--f-size-s,16px)] leading-[var(--f-lh-m,24px)] min-w-0 line-clamp-3"
         style={{ color: textColor }}
       >
         {workName}
       </p>
-      <p
-        className="font-inter font-normal text-[length:var(--f-size-s,16px)] leading-[var(--f-lh-m,24px)] shrink-0 whitespace-nowrap"
-        style={{ color: textColor, fontFeatureSettings: "'lnum' 1, 'tnum' 1" }}
-      >
-        {formatPrice(price)}
-      </p>
-    </div>
+      <div className="flex flex-col items-end justify-between self-stretch shrink-0">
+        <p
+          className="font-inter font-normal text-[length:var(--f-size-s,16px)] leading-[var(--f-lh-m,24px)] whitespace-nowrap"
+          style={{ color: priceColor, fontFeatureSettings: "'lnum' 1, 'tnum' 1" }}
+        >
+          {formatPrice(price)}
+        </p>
+        <Ic icon="ic-chevron-2" size={24} state={hovered ? 'hover' : 'default'} />
+      </div>
+    </button>
   )
 }

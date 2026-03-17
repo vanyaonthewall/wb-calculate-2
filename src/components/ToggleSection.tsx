@@ -13,7 +13,7 @@ export function ToggleSection({
   checked = true,
   onChange,
   title = 'Свободная планировка',
-  description = 'Включите, если помещение без комнат и нужна перегородка',
+  description,
   className,
 }: ToggleSectionProps) {
   const [hovered, setHovered] = useState(false)
@@ -42,9 +42,11 @@ export function ToggleSection({
         <p className="font-inter font-medium text-[length:var(--f-size-m,18px)] leading-[var(--f-lh-m,24px)] text-[color:var(--grey-850,#313131)] whitespace-nowrap">
           {title}
         </p>
-        <p className="font-inter font-normal text-[length:var(--f-size-xs,14px)] leading-[var(--f-lh-s,20px)] text-[color:var(--grey-600,#7b7b7b)]">
-          {description}
-        </p>
+        {description && (
+          <p className="font-inter font-normal text-[length:var(--f-size-xs,14px)] leading-[var(--f-lh-s,20px)] text-[color:var(--grey-600,#7b7b7b)]">
+            {description}
+          </p>
+        )}
       </div>
     </div>
   )

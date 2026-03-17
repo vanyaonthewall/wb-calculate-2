@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Input } from './Input'
 import { IcControl } from './IcControl'
 import { SegmentControl } from './SegmentControl'
 import { ToggleSection } from './ToggleSection'
 import { Card } from './Card'
 import { Ic } from './Ic'
+import { calcAll } from '../calc'
 
 const CEILING_OPTIONS = ['до 2,7 м', '3 м', 'от 3,5']
 
@@ -24,20 +25,43 @@ const TOILET_CARDS = [
   { header: 'Прокладка труб',   subText: 'Нужно тянуть коммуникации к месту санузла и строить стены' },
 ]
 
+export type Step2Params = {
+  ceiling: number
+  electricity: number
+  walls: number
+  toilet: number
+  freeLayout: boolean
+}
+
 type StepTwoProps = {
   areaStr: string
   freeLayout: boolean
+  condition?: number
   onBack?: () => void
   onTotalChange?: (total: number) => void
+  onParamsChange?: (params: Step2Params) => void
 }
 
-export function StepTwo({ areaStr: initialArea, freeLayout: initialFreeLayout, onBack, onTotalChange }: StepTwoProps) {
+const EASE = 'cubic-bezier(0.4,0,0.2,1)'
+
+export function StepTwo({
+  areaStr: initialArea,
+  freeLayout: initialFreeLayout,
+  condition = 0,
+  onBack,
+  onTotalChange,
+  onParamsChange,
+}: StepTwoProps) {
   const [areaStr, setAreaStr]         = useState(initialArea)
   const [freeLayout, setFreeLayout]   = useState(initialFreeLayout)
-  const [ceiling, setCeiling]         = useState(0)
+  const [ceiling, setCeiling]         = useState(1)   // 3 м — как на экране 1
   const [electricity, setElectricity] = useState(1)
-  const [walls, setWalls]             = useState(1)
-  const [toilet, setToilet]           = useState(2)
+  // WALLS по умолчанию соответствует STATE: Косметика → покраска, иначе → выровнять
+  const [walls, setWalls]             = useState(() => condition === 0 ? 0 : 1)
+  const [toilet, setToilet]           = useState(0)   // без санузла — как на экране 1
+
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [scrolled, setScrolled] = useState(false)
 
   const area = Math.max(1, parseFloat(areaStr.replace(',', '.')) || 0)
   const handleDecrement = () => setAreaStr(String(Math.max(1, area - 1)))
@@ -45,32 +69,67 @@ export function StepTwo({ areaStr: initialArea, freeLayout: initialFreeLayout, o
 
   useEffect(() => {
     const a = Math.max(1, parseFloat(areaStr.replace(',', '.')) || 0)
-    const base = a * (freeLayout ? 3000 : 4200)
-    const ceilingExtra = [0, 8000, 22000][ceiling] ?? 0
-    const elecExtra = electricity === 0 ? 0 : Math.round(a * 700)
-    const wallsExtra = walls === 0 ? Math.round(a * 300) : Math.round(a * 900)
-    const toiletExtra = [0, 38000, 115000][toilet] ?? 0
-    onTotalChange?.(Math.round((base + ceilingExtra + elecExtra + wallsExtra + toiletExtra) / 1000) * 1000)
-  }, [areaStr, freeLayout, ceiling, electricity, walls, toilet, onTotalChange])
+    const result = calcAll({
+      S: a,
+      state: condition,
+      freeLayout,
+      ceiling,
+      electricity,
+      walls,
+      toilet,
+    })
+    onTotalChange?.(result.total)
+    onParamsChange?.({ ceiling, electricity, walls, toilet, freeLayout })
+  }, [areaStr, freeLayout, ceiling, electricity, walls, toilet, condition, onTotalChange, onParamsChange])
 
   return (
     <div className="h-full flex flex-col bg-[var(--grey-50,#f5f5f5)]">
 
-      {/* Header */}
-      <div className="shrink-0 flex items-start gap-[var(--gap-0,0px)] px-[var(--pad-m,24px)] pt-[var(--pad-m,24px)] pb-[var(--pad-s,16px)]">
-        <p className="flex-1 font-unbounded font-semibold text-[length:var(--f-size-xl,30px)] leading-[var(--f-lh-l,40px)] whitespace-pre-wrap">
+      {/*
+        Шапка СНАРУЖИ scroll-контейнера — исключает feedback loop.
+        marginBottom: -24px тянет scroll-контент под прозрачный хвост градиента.
+        z-index: 1 — шапка поверх скролл-контента.
+      */}
+      <div
+        className="shrink-0 relative z-[1] flex items-start gap-0 px-[var(--pad-m,24px)] pointer-events-none"
+        style={{
+          marginBottom: '-24px',
+          paddingTop: scrolled ? 'var(--inset-m,12px)' : 'var(--pad-m,24px)',
+          paddingBottom: scrolled ? 'calc(var(--pad-m,24px) + var(--inset-m,12px))' : 'var(--pad-m,24px)',
+          background: 'linear-gradient(to bottom, var(--grey-50,#f5f5f5) 70%, transparent)',
+          transition: `padding-top 0.3s ${EASE}, padding-bottom 0.3s ${EASE}`,
+        }}
+      >
+        <p
+          className="flex-1 font-unbounded font-semibold whitespace-pre-wrap"
+          style={{
+            fontSize: scrolled ? 'var(--f-size-l,20px)' : 'var(--f-size-xl,30px)',
+            lineHeight: scrolled ? 'var(--f-lh-m,24px)' : 'var(--f-lh-l,40px)',
+            transition: `font-size 0.3s ${EASE}, line-height 0.3s ${EASE}`,
+          }}
+        >
           <span className="text-[color:var(--purple-500,#9744eb)]">Уточним</span>
           <span className="text-[color:var(--grey-850,#313131)]">{` детали для расчета`}</span>
         </p>
-        <div className="flex items-start pt-[var(--gap-xs,12px)] shrink-0">
+        <div
+          className="flex items-start shrink-0 pointer-events-auto"
+          style={{
+            paddingTop: scrolled ? '0px' : 'var(--gap-xs,12px)',
+            transition: `padding-top 0.3s ${EASE}`,
+          }}
+        >
           <button onClick={onBack} className="cursor-pointer">
             <Ic icon="ic-close" />
           </button>
         </div>
       </div>
 
-      {/* Scrollable content */}
-      <div className="flex-1 overflow-y-auto flex flex-col gap-[var(--gap-m,32px)] px-[var(--pad-m,24px)] py-[var(--pad-m,24px)]">
+      {/* Scroll-контейнер */}
+      <div
+        ref={scrollRef}
+        onScroll={() => setScrolled((scrollRef.current?.scrollTop ?? 0) > 8)}
+        className="flex-1 overflow-y-auto flex flex-col gap-[var(--gap-m,32px)] px-[var(--pad-m,24px)] pt-[var(--pad-m,24px)] pb-[var(--pad-m,24px)]"
+      >
 
         {/* Площадь */}
         <div className="flex flex-col gap-[var(--gap-xs,12px)]">
@@ -87,7 +146,11 @@ export function StepTwo({ areaStr: initialArea, freeLayout: initialFreeLayout, o
         </div>
 
         {/* Свободная планировка */}
-        <ToggleSection checked={freeLayout} onChange={setFreeLayout} />
+        <ToggleSection
+          checked={freeLayout}
+          onChange={setFreeLayout}
+          description="Включите, если помещение без комнат и нужна перегородка"
+        />
 
         {/* Высота потолков */}
         <div className="flex flex-col gap-[var(--gap-xs,12px)]">
@@ -133,10 +196,9 @@ export function StepTwo({ areaStr: initialArea, freeLayout: initialFreeLayout, o
           </div>
         </div>
 
-        <div className="h-[24px] shrink-0" />
+        <div className="h-[160px] shrink-0" />
 
       </div>
-
     </div>
   )
 }

@@ -4,10 +4,11 @@ import { AnimatedNumber, AnimatedPrice } from './AnimatedPrice'
 import { IcControl } from './IcControl'
 import { Chip } from './Chip'
 import wallImg from '../img/picture=wall.png'
-import brandImg from '../img/picture=brand.png'
+import sofaImg from '../img/picture=sofa.png'
 import lumaImg from '../img/picture=luma.png'
 import cameraImg from '../img/picture=camera.png'
 import coinsImg from '../img/picture=coins.png'
+import toiletImg from '../img/picture=toilet.png'
 
 export type PriceRow = {
   name: string
@@ -29,11 +30,12 @@ type PriceBoxProps = {
 }
 
 const DEFAULT_ROWS: PriceRow[] = [
-  { name: 'Стены и полы', imageUrl: wallImg, value: 80000 },
-  { name: 'Мебель и брендинг', imageUrl: brandImg, value: 45000 },
-  { name: 'Электрика и свет', imageUrl: lumaImg, value: 25000 },
-  { name: 'Безопасность и IT', imageUrl: cameraImg, value: 15000 },
-  { name: 'Расходники и резерв', imageUrl: coinsImg, value: 19200 },
+  { name: 'Стены, полы, потолок', imageUrl: wallImg,   value: 70000 },
+  { name: 'Электрика и свет',  imageUrl: lumaImg,   value: 30000 },
+  { name: 'Безопасность и IT',   imageUrl: cameraImg, value: 20000 },
+  { name: 'Санузел',           imageUrl: toiletImg, value: 36000 },
+  { name: 'Мебель WB',         imageUrl: sofaImg,   value: 20000 },
+  { name: 'Резерв 12%',        imageUrl: coinsImg,  value: 24000 },
 ]
 
 export function PriceBox({
@@ -69,12 +71,13 @@ export function PriceBox({
   const inner = (
     // flex-col-reverse: нижняя секция — первая в DOM → остаётся снизу;
     // AnimatedHeight — вторая в DOM → раскрывается вверх над нижней секцией
+    // overflow-hidden убран: вызывал GPU-compositing артефакты с белыми углами
     <div
       className={
-        'flex flex-col-reverse rounded-[var(--round-l,24px)] overflow-hidden w-full ' +
+        'flex flex-col-reverse rounded-[var(--round-l,24px)] w-full ' +
         (page === '2nd-3rd' ? 'bg-[var(--grey-0,white)]' : 'bg-[var(--grey-50,#f5f5f5)]')
       }
-      style={page === '2nd-3rd' ? { filter: 'drop-shadow(0px -4px 20px rgba(0,0,0,0.1))' } : undefined}
+      style={page === '2nd-3rd' ? { boxShadow: '0 -4px 20px rgba(0,0,0,0.1)' } : undefined}
     >
 
       {/* Нижняя секция — всегда видима, в col-reverse отображается снизу */}

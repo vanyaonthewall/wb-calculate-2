@@ -5,6 +5,7 @@ import icPencil from '../icons/ic-pencil.svg'
 import icQuestion from '../icons/ic-question.svg'
 import icList from '../icons/ic-list.svg'
 import icChevron from '../icons/ic-chevron.svg'
+import icChevron2 from '../icons/ic-chevron-2.svg'
 import icBack from '../icons/ic-back.svg'
 import icLink from '../icons/ic-link.svg'
 
@@ -16,6 +17,7 @@ const ICON_MAP = {
   'ic-question': icQuestion,
   'ic-list': icList,
   'ic-chevron': icChevron,
+  'ic-chevron-2': icChevron2,
   'ic-back': icBack,
   'ic-link': icLink,
 } as const

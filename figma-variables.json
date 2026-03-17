@@ -1,0 +1,63 @@
+{
+  "collections": [
+    {
+      "name": "WB Tokens",
+      "modes": ["Comfort", "Tiny"],
+      "variables": [
+        { "name": "color/grey/0",               "type": "COLOR",  "values": { "Comfort": { "r": 1,     "g": 1,     "b": 1,     "a": 1 }, "Tiny": { "r": 1,     "g": 1,     "b": 1,     "a": 1 } } },
+        { "name": "color/grey/50",              "type": "COLOR",  "values": { "Comfort": { "r": 0.961, "g": 0.961, "b": 0.961, "a": 1 }, "Tiny": { "r": 0.961, "g": 0.961, "b": 0.961, "a": 1 } } },
+        { "name": "color/grey/100",             "type": "COLOR",  "values": { "Comfort": { "r": 0.922, "g": 0.922, "b": 0.922, "a": 1 }, "Tiny": { "r": 0.922, "g": 0.922, "b": 0.922, "a": 1 } } },
+        { "name": "color/grey/150",             "type": "COLOR",  "values": { "Comfort": { "r": 0.878, "g": 0.878, "b": 0.878, "a": 1 }, "Tiny": { "r": 0.878, "g": 0.878, "b": 0.878, "a": 1 } } },
+        { "name": "color/grey/300",             "type": "COLOR",  "values": { "Comfort": { "r": 0.761, "g": 0.761, "b": 0.761, "a": 1 }, "Tiny": { "r": 0.761, "g": 0.761, "b": 0.761, "a": 1 } } },
+        { "name": "color/grey/400",             "type": "COLOR",  "values": { "Comfort": { "r": 0.678, "g": 0.678, "b": 0.678, "a": 1 }, "Tiny": { "r": 0.678, "g": 0.678, "b": 0.678, "a": 1 } } },
+        { "name": "color/grey/500",             "type": "COLOR",  "values": { "Comfort": { "r": 0.6,   "g": 0.6,   "b": 0.6,   "a": 1 }, "Tiny": { "r": 0.6,   "g": 0.6,   "b": 0.6,   "a": 1 } } },
+        { "name": "color/grey/600",             "type": "COLOR",  "values": { "Comfort": { "r": 0.482, "g": 0.482, "b": 0.482, "a": 1 }, "Tiny": { "r": 0.482, "g": 0.482, "b": 0.482, "a": 1 } } },
+        { "name": "color/grey/700",             "type": "COLOR",  "values": { "Comfort": { "r": 0.369, "g": 0.369, "b": 0.369, "a": 1 }, "Tiny": { "r": 0.369, "g": 0.369, "b": 0.369, "a": 1 } } },
+        { "name": "color/grey/800",             "type": "COLOR",  "values": { "Comfort": { "r": 0.251, "g": 0.251, "b": 0.251, "a": 1 }, "Tiny": { "r": 0.251, "g": 0.251, "b": 0.251, "a": 1 } } },
+        { "name": "color/grey/850",             "type": "COLOR",  "values": { "Comfort": { "r": 0.192, "g": 0.192, "b": 0.192, "a": 1 }, "Tiny": { "r": 0.192, "g": 0.192, "b": 0.192, "a": 1 } } },
+        { "name": "color/purple/500",           "type": "COLOR",  "values": { "Comfort": { "r": 0.592, "g": 0.267, "b": 0.922, "a": 1 }, "Tiny": { "r": 0.592, "g": 0.267, "b": 0.922, "a": 1 } } },
+        { "name": "color/secondary-purple/500", "type": "COLOR",  "values": { "Comfort": { "r": 0.918, "g": 0.855, "b": 0.984, "a": 1 }, "Tiny": { "r": 0.918, "g": 0.855, "b": 0.984, "a": 1 } } },
+        { "name": "color/secondary-purple/600", "type": "COLOR",  "values": { "Comfort": { "r": 0.875, "g": 0.776, "b": 0.976, "a": 1 }, "Tiny": { "r": 0.875, "g": 0.776, "b": 0.976, "a": 1 } } },
+        { "name": "color/green/500",            "type": "COLOR",  "values": { "Comfort": { "r": 0,     "g": 0.741, "b": 0,     "a": 1 }, "Tiny": { "r": 0,     "g": 0.741, "b": 0,     "a": 1 } } },
+
+        { "name": "gap/gap-0",   "type": "NUMBER", "values": { "Comfort": 0,  "Tiny": 0  } },
+        { "name": "gap/gap-3xs", "type": "NUMBER", "values": { "Comfort": 4,  "Tiny": 4  } },
+        { "name": "gap/gap-2xs", "type": "NUMBER", "values": { "Comfort": 8,  "Tiny": 4  } },
+        { "name": "gap/gap-xs",  "type": "NUMBER", "values": { "Comfort": 12, "Tiny": 8  } },
+        { "name": "gap/gap-s",   "type": "NUMBER", "values": { "Comfort": 16, "Tiny": 12 } },
+        { "name": "gap/gap-m",   "type": "NUMBER", "values": { "Comfort": 32, "Tiny": 24 } },
+        { "name": "gap/gap-l",   "type": "NUMBER", "values": { "Comfort": 40, "Tiny": 32 } },
+
+        { "name": "pad/pad-s",   "type": "NUMBER", "values": { "Comfort": 16, "Tiny": 12 } },
+        { "name": "pad/pad-m",   "type": "NUMBER", "values": { "Comfort": 24, "Tiny": 16 } },
+        { "name": "pad/pad-l",   "type": "NUMBER", "values": { "Comfort": 32, "Tiny": 32 } },
+
+        { "name": "inset/inset-0",   "type": "NUMBER", "values": { "Comfort": 0,  "Tiny": 0  } },
+        { "name": "inset/inset-2xs", "type": "NUMBER", "values": { "Comfort": 2,  "Tiny": 2  } },
+        { "name": "inset/inset-xs",  "type": "NUMBER", "values": { "Comfort": 4,  "Tiny": 4  } },
+        { "name": "inset/inset-s",   "type": "NUMBER", "values": { "Comfort": 8,  "Tiny": 6  } },
+        { "name": "inset/inset-m",   "type": "NUMBER", "values": { "Comfort": 12, "Tiny": 8  } },
+        { "name": "inset/inset-l",   "type": "NUMBER", "values": { "Comfort": 16, "Tiny": 12 } },
+        { "name": "inset/inset-xl",  "type": "NUMBER", "values": { "Comfort": 24, "Tiny": 18 } },
+
+        { "name": "radius/round-xs",   "type": "NUMBER", "values": { "Comfort": 10, "Tiny": 6  } },
+        { "name": "radius/round-s",    "type": "NUMBER", "values": { "Comfort": 12, "Tiny": 8  } },
+        { "name": "radius/round-m",    "type": "NUMBER", "values": { "Comfort": 16, "Tiny": 10 } },
+        { "name": "radius/round-l",    "type": "NUMBER", "values": { "Comfort": 24, "Tiny": 14 } },
+        { "name": "radius/round-full", "type": "NUMBER", "values": { "Comfort": 99, "Tiny": 99 } },
+
+        { "name": "font-size/f-size-xs",  "type": "NUMBER", "values": { "Comfort": 14, "Tiny": 14 } },
+        { "name": "font-size/f-size-s",   "type": "NUMBER", "values": { "Comfort": 16, "Tiny": 16 } },
+        { "name": "font-size/f-size-m",   "type": "NUMBER", "values": { "Comfort": 18, "Tiny": 18 } },
+        { "name": "font-size/f-size-l",   "type": "NUMBER", "values": { "Comfort": 20, "Tiny": 18 } },
+        { "name": "font-size/f-size-xl",  "type": "NUMBER", "values": { "Comfort": 30, "Tiny": 24 } },
+        { "name": "font-size/f-size-2xl", "type": "NUMBER", "values": { "Comfort": 44, "Tiny": 40 } },
+
+        { "name": "line-height/f-lh-s",  "type": "NUMBER", "values": { "Comfort": 20, "Tiny": 20 } },
+        { "name": "line-height/f-lh-m",  "type": "NUMBER", "values": { "Comfort": 24, "Tiny": 24 } },
+        { "name": "line-height/f-lh-l",  "type": "NUMBER", "values": { "Comfort": 40, "Tiny": 40 } },
+        { "name": "line-height/f-lh-xl", "type": "NUMBER", "values": { "Comfort": 48, "Tiny": 48 } }
+      ]
+    }
+  ]
+}

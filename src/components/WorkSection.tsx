@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Toggle } from './Toggle'
-import { WorkContainer, WorkEntry } from './WorkContainer'
+import { WorkContainer, WorkEntry, WorkClickData } from './WorkContainer'
 import { MaterialsSection } from './MaterialsSection'
-import { MaterialEntry } from './Material'
+import { MaterialEntry, MaterialClickData } from './Material'
 import { AnimatedHeight } from './AnimatedHeight'
 import { AnimatedPrice } from './AnimatedPrice'
+import { ItemPopup, PopupData } from './ItemPopup'
 
 type WorkSectionProps = {
   name?: string
@@ -45,21 +46,53 @@ export function WorkSection({
     materials.reduce((sum, m) => sum + m.price * m.quantity, 0)
   )
 
+  const [popupData, setPopupData] = useState<PopupData>(null)
+
   const displayTotal =
     (workActive ? workSubTotal : 0) + (materialsActive ? materialsSubTotal : 0)
 
   const onTotalChangeRef = useRef(onTotalChange)
   onTotalChangeRef.current = onTotalChange
+
+  // Задержка отправки total родителю: пока попап открыт — буферизуем,
+  // после закрытия — отправляем через 450 мс (после анимации скрытия попапа).
+  const popupWasOpenRef = useRef(false)
+  const pendingTotalRef = useRef<number | null>(null)
+  const timerRef = useRef<ReturnType<typeof setTimeout>>()
+
   useEffect(() => {
-    onTotalChangeRef.current?.(displayTotal)
+    if (popupData !== null) {
+      popupWasOpenRef.current = true
+    } else if (popupWasOpenRef.current) {
+      popupWasOpenRef.current = false
+      const pending = pendingTotalRef.current
+      pendingTotalRef.current = null
+      if (pending !== null) {
+        clearTimeout(timerRef.current)
+        timerRef.current = setTimeout(() => {
+          onTotalChangeRef.current?.(pending)
+        }, 450)
+      }
+    }
+  }, [popupData])
+
+  useEffect(() => {
+    if (popupWasOpenRef.current) {
+      // Попап открыт — сохраняем последнее значение, не отправляем
+      pendingTotalRef.current = displayTotal
+    } else {
+      clearTimeout(timerRef.current)
+      onTotalChangeRef.current?.(displayTotal)
+    }
   }, [displayTotal])
 
   const nameColor = active ? 'var(--grey-850, #313131)' : 'var(--grey-500, #999999)'
   const priceColor = active ? 'var(--grey-850, #313131)' : 'var(--grey-500, #999999)'
 
-  // Бордер: только при hover/open; в default — прозрачный
   const borderColor = isOpen || hovered
     ? 'var(--grey-150, #e0e0e0)'
+    : !active
+    ? 'var(--grey-100, #ebebeb)'
     : 'transparent'
 
   const prevResetVersion = useRef(resetVersion ?? 0)
@@ -73,19 +106,13 @@ export function WorkSection({
 
   const handleWorkToggle = (v: boolean) => {
     setWorkActive(v)
-    if (!v && !materialsActive) {
-      onToggle?.(false)
-    } else if (v && !active) {
-      onToggle?.(true)
-    }
+    if (!v && !materialsActive) onToggle?.(false)
+    else if (v && !active) onToggle?.(true)
   }
   const handleMaterialsToggle = (v: boolean) => {
     setMaterialsActive(v)
-    if (!v && !workActive) {
-      onToggle?.(false)
-    } else if (v && !active) {
-      onToggle?.(true)
-    }
+    if (!v && !workActive) onToggle?.(false)
+    else if (v && !active) onToggle?.(true)
   }
 
   const handleWorkTotalChange = useCallback((total: number) => setWorkSubTotal(total), [])
@@ -93,6 +120,40 @@ export function WorkSection({
     (total: number) => setMaterialsSubTotal(total),
     []
   )
+
+  const handleWorkClick = useCallback((data: WorkClickData) => {
+    setPopupData({
+      name: data.name,
+      price: data.price,
+      included: data.active,
+      gender: 'f',
+      description: 'Какое-то описание',
+      onIncludedChange: (v) => {
+        setPopupData(prev => prev ? { ...prev, included: v } : null)
+        data.onActiveChange(v)
+      },
+    })
+  }, [])
+
+  const handleMaterialClick = useCallback((data: MaterialClickData) => {
+    setPopupData({
+      name: data.name,
+      price: data.price,
+      unitPrice: data.unitPrice,
+      quantity: data.quantity,
+      included: data.active,
+      gender: 'm',
+      description: 'Какое-то описание',
+      onQuantityChange: (qty) => {
+        setPopupData(prev => prev ? { ...prev, quantity: qty, price: (prev.unitPrice ?? 0) * qty } : null)
+        data.onQuantityChange(qty)
+      },
+      onIncludedChange: (v) => {
+        setPopupData(prev => prev ? { ...prev, included: v } : null)
+        data.onActiveChange(v)
+      },
+    })
+  }, [])
 
   const headerBg = active ? 'var(--grey-50, #f5f5f5)' : 'var(--grey-100, #ebebeb)'
 
@@ -128,7 +189,7 @@ export function WorkSection({
 
   return (
     <div
-      className="w-full rounded-[var(--round-m,16px)] overflow-hidden bg-[var(--grey-50,#f5f5f5)]"
+      className="w-full rounded-[var(--round-m,16px)] overflow-hidden bg-[var(--grey-50,#f5f5f5)] relative"
       style={{
         border: `2px solid ${borderColor}`,
         transition: 'border-color 0.15s ease',
@@ -149,6 +210,7 @@ export function WorkSection({
           onToggle={handleWorkToggle}
           onTotalChange={handleWorkTotalChange}
           works={works}
+          onWorkClick={handleWorkClick}
         />
         <div className="h-px bg-[var(--grey-150,#e0e0e0)] w-full" />
         <MaterialsSection
@@ -156,8 +218,15 @@ export function WorkSection({
           onToggle={handleMaterialsToggle}
           onTotalChange={handleMaterialsTotalChange}
           initialMaterials={materials}
+          onMaterialClick={handleMaterialClick}
         />
       </AnimatedHeight>
+
+      <ItemPopup
+        open={popupData !== null}
+        data={popupData}
+        onClose={() => setPopupData(null)}
+      />
     </div>
   )
 }
