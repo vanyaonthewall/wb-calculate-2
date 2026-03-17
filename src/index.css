@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    background-color: var(--grey-50, #f5f5f5);
+  }
   body {
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;

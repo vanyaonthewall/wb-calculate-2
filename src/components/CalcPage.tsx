@@ -55,7 +55,7 @@ export function CalcPage() {
   const priceBoxRows = step1Live.rows
 
   return (
-    <div className="h-screen flex flex-col bg-[var(--grey-50,#f5f5f5)] sm:items-center">
+    <div className="h-dvh flex flex-col bg-[var(--grey-50,#f5f5f5)] sm:items-center">
 
       <div id="calc-overlay-target" className="flex-1 relative min-h-0 w-full sm:max-w-[640px]">
 
@@ -108,7 +108,7 @@ export function CalcPage() {
         </div>
 
         {/* PriceBox — прибит к низу поверх контента */}
-        <div className="absolute bottom-0 left-0 right-0 z-10">
+        <div className="absolute bottom-0 left-0 right-0 z-10" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
           <PriceBox
             rows={priceBoxRows}
             total={priceBoxTotal}
