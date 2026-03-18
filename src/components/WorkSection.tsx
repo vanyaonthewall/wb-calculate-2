@@ -155,7 +155,7 @@ export function WorkSection({
     })
   }, [])
 
-  const headerBg = active ? 'var(--grey-50, #f5f5f5)' : 'var(--grey-100, #ebebeb)'
+  const headerBg = 'var(--grey-50, #f5f5f5)'
 
   const header = (
     <div className="flex flex-col gap-[var(--gap-2xs,8px)] px-[var(--pad-s,16px)] py-[var(--gap-s,16px)] w-full" style={{ backgroundColor: headerBg }}>

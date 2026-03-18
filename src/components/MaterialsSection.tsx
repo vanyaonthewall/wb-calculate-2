@@ -35,6 +35,14 @@ export function MaterialsSection({
     initialMaterials.map(m => ({ ...m, itemActive: true }))
   )
 
+  const prevInitialRef = useRef(initialMaterials)
+  useEffect(() => {
+    if (prevInitialRef.current !== initialMaterials) {
+      prevInitialRef.current = initialMaterials
+      setItems(initialMaterials.map(m => ({ ...m, itemActive: true })))
+    }
+  }, [initialMaterials])
+
   const subTotal = items.reduce((sum, m) => sum + (m.itemActive ? m.price * m.quantity : 0), 0)
 
   const onTotalChangeRef = useRef(onTotalChange)
