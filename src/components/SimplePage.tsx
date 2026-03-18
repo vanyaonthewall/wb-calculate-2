@@ -121,124 +121,132 @@ export function SimplePage() {
   }))
 
   return (
-    <div className="bg-[var(--grey-50,#f5f5f5)]">
-      <div className="mx-auto w-full max-w-[640px]">
+    <div className="bg-[var(--grey-50,#f5f5f5)] min-h-screen">
 
-        {/* Хедер: заголовок + переключатель режимов */}
-        <div className="flex items-center justify-between gap-[var(--gap-2xs,8px)] px-[var(--pad-m,24px)] pt-[var(--pad-m,24px)] mx-[var(--gap-3xs,4px)]">
-          <p className="font-inter font-semibold text-[length:var(--f-size-xl,30px)] leading-[var(--f-lh-l,40px)] text-[color:var(--grey-850,#313131)]">
-            Калькулятор ремонта ПВЗ
-          </p>
-          <ModeSwitcher />
-        </div>
+      <div className="mx-auto w-full max-w-[800px]">
 
-        {/* Форма */}
-        <div className="flex flex-col gap-[var(--gap-m,32px)] px-[var(--pad-m,24px)] pb-[var(--pad-m,24px)] mx-[var(--gap-3xs,4px)] mt-[var(--gap-m,32px)]">
+        {/* ─── Контент ─── */}
+        <div className="w-full">
 
-          {/* 1. Площадь */}
-          <div className="flex flex-col gap-[var(--gap-xs,12px)]">
-            <p className="font-inter font-medium text-[length:var(--f-size-m,18px)] leading-[var(--f-lh-m,24px)] text-[color:var(--grey-850,#313131)]">
-              Общая площадь помещения
+          {/* Хедер: заголовок + переключатель режимов */}
+          <div className="flex items-center justify-between gap-[var(--gap-2xs,8px)] px-[var(--pad-m,24px)] pt-[var(--pad-m,24px)] mx-[var(--gap-3xs,4px)]">
+            <p className="font-inter font-semibold text-[length:var(--f-size-xl,30px)] leading-[var(--f-lh-l,40px)] text-[color:var(--grey-850,#313131)]">
+              Калькулятор ремонта ПВЗ
             </p>
+            <ModeSwitcher />
+          </div>
+
+          {/* Форма */}
+          <div className="flex flex-col gap-[var(--gap-m,32px)] px-[var(--pad-m,24px)] pb-[var(--pad-m,24px)] mx-[var(--gap-3xs,4px)] mt-[var(--gap-m,32px)]">
+
+            {/* 1. Площадь */}
             <div className="flex flex-col gap-[var(--gap-xs,12px)]">
-              <div className="flex items-start gap-[var(--gap-2xs,8px)]">
-                <div className="flex-1 min-w-0">
-                  <Input value={areaStr} onChange={setAreaStr} placeholder="35" unit="м²" />
-                </div>
-                <IcControl icon="ic-minus" color="grey" size="m" onClick={handleDecrement} />
-                <IcControl icon="ic-plus" color="grey" size="m" onClick={handleIncrement} />
-              </div>
-              <div className="flex gap-[var(--gap-2xs,8px)] flex-wrap">
-                {AREA_PRESETS.map(p => (
-                  <Chip key={p} color="grey" onClick={() => setAreaStr(String(p))}>
-                    {p}
-                  </Chip>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* 2. Свободная планировка */}
-          <ToggleSection
-            checked={freeLayout}
-            onChange={setFreeLayout}
-            description="Включите, если помещение без комнат и нужна перегородка"
-          />
-
-          {/* 3. Текущее состояние */}
-          <div className="flex flex-col gap-[var(--gap-xs,12px)]">
-            <div className="flex items-center gap-[var(--gap-2xs,8px)]">
               <p className="font-inter font-medium text-[length:var(--f-size-m,18px)] leading-[var(--f-lh-m,24px)] text-[color:var(--grey-850,#313131)]">
-                Текущее состояние
+                Общая площадь помещения
               </p>
-              <Ic icon="ic-question" />
+              <div className="flex flex-col gap-[var(--gap-xs,12px)]">
+                <div className="flex items-start gap-[var(--gap-2xs,8px)]">
+                  <div className="flex-1 min-w-0">
+                    <Input value={areaStr} onChange={setAreaStr} placeholder="35" unit="м²" />
+                  </div>
+                  <IcControl icon="ic-minus" color="grey" size="m" onClick={handleDecrement} />
+                  <IcControl icon="ic-plus" color="grey" size="m" onClick={handleIncrement} />
+                </div>
+                <div className="flex gap-[var(--gap-2xs,8px)] flex-wrap">
+                  {AREA_PRESETS.map(p => (
+                    <Chip key={p} color="grey" onClick={() => setAreaStr(String(p))}>
+                      {p}
+                    </Chip>
+                  ))}
+                </div>
+              </div>
             </div>
-            <SegmentControl options={CONDITIONS} value={condition} onChange={setCondition} />
-          </div>
 
-          {/* 4. Высота потолков */}
-          <div className="flex flex-col gap-[var(--gap-xs,12px)]">
-            <p className="font-inter font-medium text-[length:var(--f-size-m,18px)] leading-[var(--f-lh-m,24px)] text-[color:var(--grey-850,#313131)]">
-              Высота потолков
-            </p>
-            <SegmentControl options={CEILING_OPTIONS} value={ceiling} onChange={setCeiling} />
-          </div>
-
-        </div>
-
-        {/* Заголовок раздела сметы */}
-        <div className="flex items-center justify-between gap-[var(--gap-2xs,8px)] px-[var(--pad-m,24px)] pt-[40px] pb-[var(--gap-3xs,4px)] mx-[var(--gap-3xs,4px)]">
-          <p className="font-inter font-semibold text-[length:var(--f-size-xl,30px)] leading-[var(--f-lh-l,40px)] text-[color:var(--grey-850,#313131)]">
-            Расчет
-          </p>
-          <Chip size="s" color="secondary" interactive={false}>включены материалы и работы</Chip>
-        </div>
-
-        {/* Категории + Баннер */}
-        <div className="flex flex-col gap-[var(--gap-3xs,4px)] mx-[var(--gap-3xs,4px)] px-[var(--pad-m,24px)]">
-          {CATEGORIES.map((cat, i) => (
-            <CalculationUnit
-              key={i}
-              name={cat.name}
-              nameNode={cat.name === 'Резерв 12%' ? (
-                <><span>Резерв </span><span style={{ color: 'var(--grey-500, #999999)' }}>12%</span></>
-              ) : undefined}
-              imageUrl={cat.imageUrl}
-              onTotalChange={callbacksRef.current[i]}
-              sections={categorySections[i]}
-              flatMaterials={
-                cat.name === 'Мебель'
-                  ? mebelItems
-                  : cat.name === 'Резерв 12%'
-                  ? [{ materialText: 'Резерв 12% от общей сметы', price: reserve, quantity: 1 }]
-                  : undefined
-              }
-              canExpand={cat.name !== 'Резерв 12%'}
-              initialEnabled={true}
+            {/* 2. Свободная планировка */}
+            <ToggleSection
+              checked={freeLayout}
+              onChange={setFreeLayout}
+              description="Включите, если помещение без комнат и нужна перегородка"
             />
-          ))}
-          <Banner />
-        </div>
 
-        {/* Отступ под прибитый PriceBox */}
-        <div className="h-[320px]" />
+            {/* 3. Текущее состояние */}
+            <div className="flex flex-col gap-[var(--gap-xs,12px)]">
+              <div className="flex items-center gap-[var(--gap-2xs,8px)]">
+                <p className="font-inter font-medium text-[length:var(--f-size-m,18px)] leading-[var(--f-lh-m,24px)] text-[color:var(--grey-850,#313131)]">
+                  Текущее состояние
+                </p>
+                <Ic icon="ic-question" />
+              </div>
+              <SegmentControl options={CONDITIONS} value={condition} onChange={setCondition} />
+            </div>
+
+            {/* 4. Высота потолков */}
+            <div className="flex flex-col gap-[var(--gap-xs,12px)]">
+              <p className="font-inter font-medium text-[length:var(--f-size-m,18px)] leading-[var(--f-lh-m,24px)] text-[color:var(--grey-850,#313131)]">
+                Высота потолков
+              </p>
+              <SegmentControl options={CEILING_OPTIONS} value={ceiling} onChange={setCeiling} />
+            </div>
+
+          </div>
+
+          {/* Заголовок раздела сметы */}
+          <div className="flex items-center justify-between gap-[var(--gap-2xs,8px)] px-[var(--pad-m,24px)] pt-[40px] pb-[var(--gap-3xs,4px)] mx-[var(--gap-3xs,4px)]">
+            <p className="font-inter font-semibold text-[length:var(--f-size-xl,30px)] leading-[var(--f-lh-l,40px)] text-[color:var(--grey-850,#313131)]">
+              Расчет
+            </p>
+            <Chip size="s" color="secondary" interactive={false}>включены материалы и работы</Chip>
+          </div>
+
+          {/* Категории + Баннер — на мобиле до краёв, на 800px+ с паддингом */}
+          <div className="flex flex-col gap-[var(--gap-3xs,4px)] mx-[var(--gap-3xs,4px)] px-0 min-[640px]:px-[var(--pad-m,24px)]">
+            {CATEGORIES.map((cat, i) => (
+              <CalculationUnit
+                key={i}
+                name={cat.name}
+                nameNode={cat.name === 'Резерв 12%' ? (
+                  <><span>Резерв </span><span style={{ color: 'var(--grey-500, #999999)' }}>12%</span></>
+                ) : undefined}
+                imageUrl={cat.imageUrl}
+                onTotalChange={callbacksRef.current[i]}
+                sections={categorySections[i]}
+                flatMaterials={
+                  cat.name === 'Мебель'
+                    ? mebelItems
+                    : cat.name === 'Резерв 12%'
+                    ? [{ materialText: 'Резерв 12% от общей сметы', price: reserve, quantity: 1 }]
+                    : undefined
+                }
+                canExpand={cat.name !== 'Резерв 12%'}
+                initialEnabled={true}
+              />
+            ))}
+            <Banner />
+          </div>
+
+          {/* Отступ под прибитый PriceBox */}
+          <div className="h-[320px]" />
+
+        </div>
 
       </div>
 
-      {/* PriceBox — прибит к низу экрана, во всю ширину */}
+      {/* PriceBox — всегда fixed снизу, max-w-[800px] по центру */}
       <div
-        className="fixed bottom-0 left-0 right-0 z-10"
+        className="fixed bottom-0 left-0 right-0 z-10 flex justify-center"
         style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
       >
-        <PriceBox
-          rows={priceBoxRows}
-          total={computedTotal}
-          page="2nd-3rd"
-          showList={false}
-          showBtBack={false}
-          ctaText="Скачать смету в PDF"
-          showCta={true}
-        />
+        <div className="w-full max-w-[800px]">
+          <PriceBox
+            rows={priceBoxRows}
+            total={computedTotal}
+            page="2nd-3rd"
+            showList={false}
+            showBtBack={false}
+            ctaText="Скачать смету в PDF"
+            showCta={true}
+          />
+        </div>
       </div>
 
     </div>

@@ -62,7 +62,7 @@ export function ItemPopup({ open, data, onClose }: ItemPopupProps) {
 
   return createPortal(
     <div
-      className="fixed inset-0 z-50 bg-[var(--grey-0,white)] flex flex-col gap-[var(--gap-m,32px)] p-[var(--pad-m,24px)] overflow-hidden"
+      className="fixed inset-0 min-[700px]:inset-y-0 min-[700px]:left-auto min-[700px]:right-0 min-[700px]:w-[420px] z-50 bg-[var(--grey-0,white)] flex flex-col gap-[var(--gap-m,32px)] p-[var(--pad-m,24px)] overflow-hidden"
       style={{
         transform: animOpen
           ? 'translateX(0) rotate(0deg)'

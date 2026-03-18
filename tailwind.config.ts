@@ -8,6 +8,9 @@ export default {
         unbounded: ['Unbounded', 'sans-serif'],
         inter: ['Inter', 'sans-serif'],
       },
+      screens: {
+        sidebar: '860px',
+      },
     },
   },
   plugins: [],
