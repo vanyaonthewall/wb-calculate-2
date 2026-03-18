@@ -94,12 +94,7 @@ export function PriceBox({
               onClick={() => setIsOpen(v => !v)}
             />
           )}
-          {!showList && (
-            <p className="font-inter font-normal text-[length:var(--f-size-xs,14px)] leading-[var(--f-lh-s,20px)] text-[color:var(--grey-500,#999999)]">
-              Общая сумма
-            </p>
-          )}
-          <div className={'flex items-center gap-[var(--gap-3xs,4px)] font-inter font-semibold text-[color:var(--grey-850,#313131)] whitespace-nowrap' + (!showList ? ' justify-end' : ' flex-1')}>
+          <div className={'flex items-center gap-[var(--gap-3xs,4px)] font-[\'Unbounded\',sans-serif] font-semibold text-[color:var(--grey-850,#313131)] whitespace-nowrap' + (!showList ? ' flex-1 justify-end' : '')}>
             <span
               className={numClass}
               style={{ fontFeatureSettings: "'lnum' 1, 'tnum' 1" }}
@@ -118,7 +113,7 @@ export function PriceBox({
             )}
             <button
               onClick={onCtaClick}
-              className="flex-1 bg-[var(--grey-850,#313131)] text-[color:var(--grey-0,#ffffff)] font-inter font-bold text-[length:var(--f-size-l,20px)] leading-[var(--f-lh-m,24px)] py-[var(--inset-xl,24px)] rounded-[var(--round-s,12px)] cursor-pointer whitespace-nowrap text-center"
+              className="flex-1 bg-[var(--grey-850,#313131)] text-[color:var(--grey-0,#ffffff)] font-['Unbounded',sans-serif] font-bold text-[length:var(--f-size-l,20px)] leading-[var(--f-lh-m,24px)] py-[var(--inset-xl,24px)] rounded-[var(--round-s,12px)] cursor-pointer whitespace-nowrap text-center"
             >
               {ctaText}
             </button>
@@ -133,7 +128,7 @@ export function PriceBox({
 
           {/* Шапка */}
           <div className="flex items-center justify-between pb-[var(--gap-s,16px)] pt-[var(--pad-m,24px)] px-[var(--pad-m,24px)]">
-            <p className="font-inter font-bold text-[length:var(--f-size-l,20px)] leading-[var(--f-lh-m,24px)] text-[color:var(--grey-850,#313131)] whitespace-nowrap">
+            <p className="font-['Unbounded',sans-serif] font-bold text-[length:var(--f-size-l,20px)] leading-[var(--f-lh-m,24px)] text-[color:var(--grey-850,#313131)] whitespace-nowrap">
               Расчет
             </p>
             <Chip size="s" color="secondary" interactive={false}>{chipText}</Chip>

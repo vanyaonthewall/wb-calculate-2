@@ -62,7 +62,7 @@ export function ItemPopup({ open, data, onClose }: ItemPopupProps) {
 
   return createPortal(
     <div
-      className="fixed inset-0 z-50 bg-[var(--grey-0,white)] flex flex-col gap-[var(--gap-m,32px)] p-[var(--pad-m,24px)] overflow-hidden"
+      className="absolute inset-0 z-50 bg-[var(--grey-0,white)] flex flex-col gap-[var(--gap-m,32px)] p-[var(--pad-m,24px)] rounded-[var(--round-l,24px)] overflow-hidden"
       style={{
         transform: animOpen
           ? 'translateX(0) rotate(0deg)'
@@ -78,7 +78,7 @@ export function ItemPopup({ open, data, onClose }: ItemPopupProps) {
 
         {/* Заголовок + закрытие */}
         <div className="flex items-start">
-          <p className="flex-1 font-inter font-bold text-[length:var(--f-size-l,20px)] leading-[var(--f-lh-m,24px)] text-[color:var(--grey-850,#313131)] overflow-hidden">
+          <p className="flex-1 font-['Unbounded',sans-serif] font-bold text-[length:var(--f-size-l,20px)] leading-[var(--f-lh-m,24px)] text-[color:var(--grey-850,#313131)] overflow-hidden">
             {name}
           </p>
           <button onClick={onClose} className="cursor-pointer shrink-0 pt-[var(--inset-xs,4px)]">
@@ -146,7 +146,7 @@ export function ItemPopup({ open, data, onClose }: ItemPopupProps) {
             </p>
           )}
           <p
-            className="font-inter font-semibold text-[length:var(--f-size-xl,30px)] leading-[var(--f-lh-l,40px)] text-[color:var(--grey-850,#313131)] whitespace-nowrap"
+            className="font-['Unbounded',sans-serif] font-semibold text-[length:var(--f-size-xl,30px)] leading-[var(--f-lh-l,40px)] text-[color:var(--grey-850,#313131)] whitespace-nowrap"
             style={{ fontFeatureSettings: "'lnum' 1, 'tnum' 1" }}
           >
             {formatPrice(price)}
@@ -156,7 +156,7 @@ export function ItemPopup({ open, data, onClose }: ItemPopupProps) {
 
         {/* Кнопка скачать чертёж */}
         {showDownload && (
-          <button className="w-full bg-[var(--grey-850,#313131)] text-[color:var(--grey-0,#ffffff)] font-inter font-bold text-[length:var(--f-size-l,20px)] leading-[var(--f-lh-m,24px)] py-[var(--inset-xl,24px)] rounded-[var(--round-s,12px)] cursor-pointer text-center">
+          <button className="w-full bg-[var(--grey-850,#313131)] text-[color:var(--grey-0,#ffffff)] font-['Unbounded',sans-serif] font-bold text-[length:var(--f-size-l,20px)] leading-[var(--f-lh-m,24px)] py-[var(--inset-xl,24px)] rounded-[var(--round-s,12px)] cursor-pointer text-center">
             Скачать чертёж
           </button>
         )}

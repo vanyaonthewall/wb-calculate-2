@@ -55,11 +55,11 @@ export function Material({
     : 'var(--grey-400, #adadad)'
 
   return (
-    <div className="flex items-start gap-[var(--gap-2xs,8px)] pb-[var(--pad-s,16px)] border-b border-[var(--grey-150,#e0e0e0)] w-full last:border-b-0 last:pb-0">
+    <div className="flex items-center gap-[var(--gap-2xs,8px)] pb-[var(--pad-s,16px)] border-b border-[var(--grey-150,#e0e0e0)] w-full last:border-b-0 last:pb-0">
 
       {/* Левая часть: картинка + название — кликабельная */}
       <button
-        className="flex flex-1 items-start gap-[var(--gap-2xs,8px)] min-w-0 text-left cursor-pointer"
+        className="flex flex-1 items-center gap-[var(--gap-2xs,8px)] min-w-0 text-left cursor-pointer"
         onMouseEnter={() => setLeftHovered(true)}
         onMouseLeave={() => setLeftHovered(false)}
         onClick={() => onPopupClick?.()}

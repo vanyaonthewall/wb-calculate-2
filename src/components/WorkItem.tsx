@@ -47,7 +47,7 @@ export function WorkItem({
         >
           {formatPrice(price)}
         </p>
-        <Ic icon="ic-question" size={24} state={hovered ? 'hover' : 'default'} />
+        <Ic icon="ic-chevron-2" size={24} state={hovered ? 'hover' : 'default'} />
       </div>
     </button>
   )

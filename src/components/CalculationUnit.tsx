@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Icon } from './Icon'
 import { Toggle } from './Toggle'
 import { WorkSection } from './WorkSection'
@@ -22,7 +22,6 @@ export type UnitSection = {
 
 type CalculationUnitProps = {
   name?: string
-  nameNode?: ReactNode
   imageUrl?: string
   sections?: UnitSection[]
   flatMaterials?: MaterialEntry[]
@@ -109,7 +108,6 @@ const DEFAULT_SECTIONS: UnitSection[] = [
 
 export function CalculationUnit({
   name = 'Стены и полы',
-  nameNode,
   imageUrl = wallImg,
   sections: rawSections = DEFAULT_SECTIONS,
   flatMaterials: rawFlatMaterials,
@@ -156,12 +154,6 @@ export function CalculationUnit({
       : 0
   )
 
-  useEffect(() => {
-    if (scaledFlatMaterials) {
-      setFlatTotal(scaledFlatMaterials.reduce((sum, m) => sum + m.price * m.quantity, 0))
-    }
-  }, [scaledFlatMaterials])
-
   const [flatPopupData, setFlatPopupData] = useState<PopupData>(null)
 
   const handleFlatMaterialClick = useCallback((data: MaterialClickData) => {
@@ -205,13 +197,6 @@ export function CalculationUnit({
     if (prevRawRef.current !== rawSections) {
       prevRawRef.current = rawSections
       setActiveMap(Object.fromEntries(rawSections.map((s, i) => [i, s.initialActive ?? true])))
-      setSectionTotals(Object.fromEntries(
-        rawSections.map((s, i) => [
-          i,
-          (s.works ?? []).reduce((sum, w) => sum + w.price, 0) +
-            (s.materials ?? []).reduce((sum, m) => sum + m.price * m.quantity, 0),
-        ])
-      ))
     }
   }, [rawSections])
 
@@ -238,16 +223,10 @@ export function CalculationUnit({
 
   const iconColor = headerHovered ? 'var(--grey-600, #7b7b7b)' : 'var(--grey-500, #999999)'
   const priceColor = toggle ? 'var(--grey-850, #313131)' : 'var(--grey-500, #999999)'
-  const nameColor  = toggle ? 'var(--grey-850, #313131)' : 'var(--grey-500, #999999)'
+  const nameColor = toggle ? 'var(--grey-850, #313131)' : 'var(--grey-500, #999999)'
 
   return (
-    <div
-      className="flex flex-col rounded-[var(--round-l,24px)] p-[var(--pad-m,24px)] w-full"
-      style={{
-        backgroundColor: toggle ? 'var(--grey-0, white)' : 'var(--grey-100, #ebebeb)',
-        transition: 'background-color 0.2s ease',
-      }}
-    >
+    <div className="flex flex-col rounded-[var(--round-l,24px)] p-[var(--pad-m,24px)] w-full bg-[var(--grey-0,white)]">
 
       {/* Header */}
       <div className="flex items-center w-full gap-[var(--gap-2xs,8px)] px-[var(--pad-s,16px)]">
@@ -281,12 +260,12 @@ export function CalculationUnit({
             style={{ color: nameColor, wordBreak: 'break-word', hyphens: 'auto' }}
             lang="ru"
           >
-            {nameNode ?? name}
+            {name}
           </p>
         </button>
 
         {/* Правая часть: цена + тогл */}
-        <div className="flex items-center shrink-0 gap-[var(--gap-2xs,8px)]">
+        <div className="flex items-center shrink-0 gap-[var(--gap-3xs,4px)]">
           <AnimatedPrice
             value={unitTotal}
             className="font-inter font-semibold text-[length:var(--f-size-s,16px)] leading-[var(--f-lh-m,24px)] w-[85px] text-right"

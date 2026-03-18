@@ -17,7 +17,7 @@ export function Chip({ children = '25 м²', color = 'grey', size = 'm', interac
 
   const sizeClass = size === 's'
     ? 'gap-[var(--gap-3xs,4px)] px-[var(--inset-s,8px)] py-[var(--inset-2xs,2px)] rounded-[var(--round-full,99px)] text-[length:var(--f-size-xs,14px)] leading-[var(--f-lh-s,20px)]'
-    : 'gap-[var(--gap-2xs,8px)] px-[var(--inset-l,16px)] py-[var(--inset-xs,4px)] rounded-[var(--round-xs,10px)] text-[length:var(--f-size-s,16px)] leading-[var(--f-lh-m,24px)]'
+    : 'gap-[var(--gap-2xs,8px)] px-[var(--inset-m,12px)] py-[var(--inset-xs,4px)] rounded-[var(--round-xs,10px)] text-[length:var(--f-size-s,16px)] leading-[var(--f-lh-m,24px)]'
 
   const baseClass =
     className ??

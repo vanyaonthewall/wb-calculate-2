@@ -18,7 +18,7 @@ export function Banner({
     >
       {/* Текст */}
       <div className="flex flex-col gap-[var(--gap-3xs,4px)] pr-[var(--pad-l,32px)]">
-        <p className="font-inter font-bold text-[length:var(--f-size-l,20px)] leading-[var(--f-lh-m,24px)] text-[color:var(--grey-0,white)] line-clamp-1">
+        <p className="font-['Unbounded',sans-serif] font-bold text-[length:var(--f-size-l,20px)] leading-[var(--f-lh-m,24px)] text-[color:var(--grey-0,white)] line-clamp-1">
           {title}
         </p>
         <p className="font-inter font-normal text-[length:var(--f-size-xs,14px)] leading-[var(--f-lh-s,20px)] text-[color:var(--grey-0,white)] line-clamp-2">
