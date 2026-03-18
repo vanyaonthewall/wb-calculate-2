@@ -19,8 +19,8 @@ export function ToggleSection({
   const [hovered, setHovered] = useState(false)
 
   const borderColor = hovered
-    ? 'var(--grey-300, #c2c2c2)'
-    : 'var(--grey-150, #e0e0e0)'
+    ? 'var(--grey-150, #e0e0e0)'
+    : 'transparent'
 
   return (
     <div

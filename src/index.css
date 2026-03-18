@@ -151,10 +151,10 @@
   --inset-m: 8px;
   --inset-l: 12px;
   --inset-xl: 18px;
-  --round-xs: 6px;
-  --round-s: 8px;
-  --round-m: 10px;
-  --round-l: 14px;
+  --round-xs: 3px;
+  --round-s: 4px;
+  --round-m: 4px;
+  --round-l: 4px;
   --f-size-l: 18px;
   --f-size-xl: 24px;
   --f-size-2xl: 40px;
