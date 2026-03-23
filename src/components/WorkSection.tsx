@@ -166,7 +166,7 @@ export function WorkSection({
       <div className="flex items-start w-full gap-[var(--gap-2xs,8px)]">
         {/* Тогл слева (версия 2) */}
         {toggleLeft && (
-          <div className="shrink-0" onClick={e => e.stopPropagation()}>
+          <div className="shrink-0 self-center" onClick={e => e.stopPropagation()}>
             <Toggle checked={active} onChange={v => onToggle?.(v)} />
           </div>
         )}
