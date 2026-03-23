@@ -71,13 +71,16 @@ export function PriceBox({
   const inner = (
     // flex-col-reverse: нижняя секция — первая в DOM → остаётся снизу;
     // AnimatedHeight — вторая в DOM → раскрывается вверх над нижней секцией
-    // overflow-hidden убран: вызывал GPU-compositing артефакты с белыми углами
+    // translateZ(0): GPU-слой предотвращает белые углы Safari при overflow-hidden + border-radius
     <div
       className={
-        'flex flex-col-reverse rounded-[var(--round-l,24px)] w-full ' +
+        'flex flex-col-reverse rounded-[var(--round-l,24px)] w-full overflow-hidden ' +
         (page === '2nd-3rd' ? 'bg-[var(--grey-0,white)]' : 'bg-[var(--grey-50,#f5f5f5)]')
       }
-      style={page === '2nd-3rd' ? { boxShadow: '0 -4px 20px rgba(0,0,0,0.1)' } : undefined}
+      style={page === '2nd-3rd'
+        ? { boxShadow: '0 -4px 20px rgba(0,0,0,0.1)', transform: 'translateZ(0)' }
+        : { transform: 'translateZ(0)' }
+      }
     >
 
       {/* Нижняя секция — всегда видима, в col-reverse отображается снизу */}
@@ -112,7 +115,13 @@ export function PriceBox({
 
         {/* CTA */}
         {showCta && (
-          <div className="flex gap-[var(--gap-2xs,8px)] pb-[var(--pad-m,24px)] px-[var(--pad-m,24px)]">
+          <div
+            className="flex gap-[var(--gap-2xs,8px)] px-[var(--pad-m,24px)]"
+            style={{
+              paddingBottom: 'calc(var(--pad-m, 24px) + env(safe-area-inset-bottom, 0px))',
+              transition: 'padding-bottom 0.35s ease',
+            }}
+          >
             {showBtBack && (
               <IcControl icon="ic-back" color="grey" size="l" onClick={onBackClick} />
             )}

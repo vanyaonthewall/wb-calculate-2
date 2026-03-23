@@ -133,7 +133,7 @@ export function SimplePage() {
 
           {/* Хедер: заголовок + переключатели */}
           <div className="flex items-center justify-between gap-[var(--gap-2xs,8px)] px-[var(--pad-m,24px)] pt-[var(--pad-m,24px)] mx-[var(--gap-3xs,4px)]">
-            <p className="font-inter font-semibold text-[length:var(--f-size-xl,30px)] leading-[var(--f-lh-l,40px)] text-[color:var(--grey-850,#313131)]">
+            <p className="min-w-0 font-inter font-semibold text-[length:var(--f-size-xl,30px)] leading-[var(--f-lh-l,40px)] text-[color:var(--grey-850,#313131)]">
               Калькулятор ремонта ПВЗ
             </p>
             <div className="flex items-center gap-[var(--gap-2xs,8px)] shrink-0">
@@ -247,10 +247,7 @@ export function SimplePage() {
       </div>
 
       {/* PriceBox — всегда fixed снизу, max-w-[800px] по центру */}
-      <div
-        className="fixed bottom-0 left-0 right-0 z-10 flex justify-center"
-        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
-      >
+      <div className="fixed bottom-0 left-0 right-0 z-10 flex justify-center overflow-x-clip">
         <div className="w-full max-w-[800px]">
           <PriceBox
             rows={priceBoxRows}

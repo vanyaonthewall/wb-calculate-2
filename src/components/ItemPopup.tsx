@@ -62,7 +62,7 @@ export function ItemPopup({ open, data, onClose }: ItemPopupProps) {
 
   return createPortal(
     <div
-      className="fixed inset-0 min-[700px]:inset-y-0 min-[700px]:left-auto min-[700px]:right-0 min-[700px]:w-[420px] z-50 bg-[var(--grey-0,white)] flex flex-col gap-[var(--gap-m,32px)] p-[var(--pad-m,24px)] overflow-hidden"
+      className="fixed inset-0 min-[700px]:inset-y-0 min-[700px]:left-auto min-[700px]:right-0 min-[700px]:w-[420px] z-50 bg-[var(--grey-0,white)] flex flex-col gap-[var(--gap-m,32px)] pt-[var(--pad-m,24px)] px-[var(--pad-m,24px)] overflow-y-auto"
       style={{
         transform: animOpen
           ? 'translateX(0) rotate(0deg)'
@@ -112,7 +112,10 @@ export function ItemPopup({ open, data, onClose }: ItemPopupProps) {
       </div>
 
       {/* Нижняя секция */}
-      <div className="shrink-0 flex flex-col gap-[var(--gap-s,16px)]">
+      <div
+        className="shrink-0 flex flex-col gap-[var(--gap-s,16px)]"
+        style={{ paddingBottom: 'max(var(--pad-m, 24px), calc(var(--pad-m, 24px) + env(safe-area-inset-bottom, 0px)))' }}
+      >
         <div className="flex items-end justify-between w-full">
 
         {/* Левая — количество (только материал) */}

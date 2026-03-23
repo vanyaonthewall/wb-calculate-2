@@ -5,10 +5,12 @@
 @layer base {
   html {
     background-color: var(--grey-50, #f5f5f5);
+    overflow-x: hidden;
   }
   body {
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
 }
 
@@ -99,36 +101,6 @@
 @keyframes slideDown {
   from { opacity: 1; transform: translateY(0); }
   to   { opacity: 0; transform: translateY(10px); }
-}
-
-/* ═══════════════════════════════════════
-   ODOMETER — переопределяем стили темы
-   ═══════════════════════════════════════ */
-
-/* Переопределяем только то, что odometer ставит сам:
-   font-family (Helvetica Neue → Inter) и line-height (1.1em → inherit).
-   font-weight / font-size / color НЕ трогаем — они не ставятся odometer'ом
-   и наш !important сломает tailwind-классы и inline style на том же элементе. */
-.odometer.odometer-theme-default,
-.odometer.odometer-auto-theme {
-  font-family: inherit !important;
-  line-height: inherit !important;
-  vertical-align: baseline !important;
-}
-
-/* Анимация цифр — 0.65s expo-out easing */
-.odometer.odometer-theme-default.odometer-animating-up .odometer-ribbon-inner,
-.odometer.odometer-auto-theme.odometer-animating-up .odometer-ribbon-inner {
-  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1) !important;
-}
-.odometer.odometer-theme-default.odometer-animating-down .odometer-ribbon-inner,
-.odometer.odometer-auto-theme.odometer-animating-down .odometer-ribbon-inner {
-  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  transform: translateY(-100%);
-}
-.odometer.odometer-theme-default.odometer-animating-down.odometer-animating .odometer-ribbon-inner,
-.odometer.odometer-auto-theme.odometer-animating-down.odometer-animating .odometer-ribbon-inner {
-  transform: translateY(0) !important;
 }
 
 /* Точечный разделитель строк в PriceBox (round dots вместо border-dashed) */
