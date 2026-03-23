@@ -39,16 +39,16 @@ export function WorkItem({
         style={{ color: textColor }}
       >
         {workName}
+        <span className="inline-flex align-middle ml-[var(--gap-2xs,8px)]">
+          <Ic icon="ic-question" size={24} state={hovered ? 'hover' : 'default'} />
+        </span>
       </p>
-      <div className="flex flex-col items-end justify-between self-stretch shrink-0">
-        <p
-          className="font-inter font-normal text-[length:var(--f-size-s,16px)] leading-[var(--f-lh-m,24px)] whitespace-nowrap"
-          style={{ color: priceColor, fontFeatureSettings: "'lnum' 1, 'tnum' 1" }}
-        >
-          {formatPrice(price)}
-        </p>
-        <Ic icon="ic-question" size={24} state={hovered ? 'hover' : 'default'} />
-      </div>
+      <p
+        className="shrink-0 font-inter font-normal text-[length:var(--f-size-s,16px)] leading-[var(--f-lh-m,24px)] whitespace-nowrap"
+        style={{ color: priceColor, fontFeatureSettings: "'lnum' 1, 'tnum' 1" }}
+      >
+        {formatPrice(price)}
+      </p>
     </button>
   )
 }

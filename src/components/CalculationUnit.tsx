@@ -18,6 +18,7 @@ export type UnitSection = {
   initialActive?: boolean           // false → секция начинает выключенной
   mutuallyExclusiveGroup?: string   // включение одной выключает остальные в группе
   skipScaling?: boolean             // не участвует в пропорциональном масштабировании
+  canExpand?: boolean               // false → секция не раскрывается (только тогл)
 }
 
 type CalculationUnitProps = {
@@ -30,6 +31,7 @@ type CalculationUnitProps = {
   onTotalChange?: (total: number) => void
   canExpand?: boolean
   initialEnabled?: boolean
+  toggleLeft?: boolean
 }
 
 function scaleSection(sections: UnitSection[], initialTotal: number): UnitSection[] {
@@ -117,6 +119,7 @@ export function CalculationUnit({
   onTotalChange,
   canExpand = true,
   initialEnabled = true,
+  toggleLeft = false,
 }: CalculationUnitProps) {
   const sections = useMemo(
     () => !rawFlatMaterials && initialTotal && initialTotal > 0
@@ -236,6 +239,15 @@ export function CalculationUnit({
     )
   }, [handleSectionTotalChange, sections.length])
 
+  // При включении тогла: если все секции initialActive=false — активируем первую
+  const handleToggleOn = () => {
+    const newMap = Object.fromEntries(sections.map((s, i) => [i, s.initialActive ?? true]))
+    const allOff = sections.every((_, i) => !newMap[i])
+    if (allOff && sections.length > 0) newMap[0] = true
+    setActiveMap(newMap)
+    setResetVersion(r => r + 1)
+  }
+
   const iconColor = headerHovered ? 'var(--grey-600, #7b7b7b)' : 'var(--grey-500, #999999)'
   const priceColor = toggle ? 'var(--grey-850, #313131)' : 'var(--grey-500, #999999)'
   const nameColor  = toggle ? 'var(--grey-850, #313131)' : 'var(--grey-500, #999999)'
@@ -252,7 +264,18 @@ export function CalculationUnit({
       {/* Header */}
       <div className="flex items-center w-full gap-[var(--gap-2xs,8px)] px-[var(--pad-s,16px)]">
 
-        {/* Левая часть: chevron + картинка + название */}
+        {/* Тогл слева (версия 2) */}
+        {toggleLeft && (
+          <Toggle
+            checked={toggle}
+            onChange={v => {
+              if (v) handleToggleOn()
+              setToggle(v)
+            }}
+          />
+        )}
+
+        {/* Центральная часть: chevron + картинка + название */}
         <button
           className="flex flex-1 items-center min-w-0 gap-[var(--gap-2xs,8px)]"
           style={{ cursor: canExpand ? 'pointer' : 'default' }}
@@ -285,23 +308,22 @@ export function CalculationUnit({
           </p>
         </button>
 
-        {/* Правая часть: цена + тогл */}
+        {/* Правая часть: цена + тогл (версия 1) */}
         <div className="flex items-center shrink-0 gap-[var(--gap-2xs,8px)]">
           <AnimatedPrice
             value={unitTotal}
             className="font-inter font-semibold text-[length:var(--f-size-s,16px)] leading-[var(--f-lh-m,24px)] w-[85px] text-right"
             style={{ color: priceColor, fontFeatureSettings: "'lnum' 1, 'tnum' 1" }}
           />
-          <Toggle
-            checked={toggle}
-            onChange={v => {
-              if (v) {
-                setActiveMap(Object.fromEntries(sections.map((s, i) => [i, s.initialActive ?? true])))
-                setResetVersion(r => r + 1)
-              }
-              setToggle(v)
-            }}
-          />
+          {!toggleLeft && (
+            <Toggle
+              checked={toggle}
+              onChange={v => {
+                if (v) handleToggleOn()
+                setToggle(v)
+              }}
+            />
+          )}
         </div>
       </div>
 
@@ -339,6 +361,8 @@ export function CalculationUnit({
                 materials={s.materials}
                 active={toggle && (activeMap[i] ?? (s.initialActive ?? true))}
                 resetVersion={resetVersion}
+                toggleLeft={toggleLeft}
+                canExpand={s.canExpand !== false}
                 onToggle={v => {
                   setActiveMap(prev => {
                     const next = { ...prev, [i]: v }

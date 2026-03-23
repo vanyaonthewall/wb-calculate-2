@@ -16,6 +16,8 @@ type WorkSectionProps = {
   onTotalChange?: (total: number) => void
   works?: WorkEntry[]
   materials?: MaterialEntry[]
+  toggleLeft?: boolean
+  canExpand?: boolean
 }
 
 export function WorkSection({
@@ -33,6 +35,8 @@ export function WorkSection({
       quantity: 3,
     },
   ],
+  toggleLeft = false,
+  canExpand = true,
 }: WorkSectionProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [hovered, setHovered] = useState(false)
@@ -89,7 +93,7 @@ export function WorkSection({
   const nameColor = active ? 'var(--grey-850, #313131)' : 'var(--grey-500, #999999)'
   const priceColor = active ? 'var(--grey-850, #313131)' : 'var(--grey-500, #999999)'
 
-  const borderColor = isOpen || hovered
+  const borderColor = (isOpen || hovered) && canExpand
     ? 'var(--grey-150, #e0e0e0)'
     : !active
     ? 'var(--grey-100, #ebebeb)'
@@ -159,7 +163,13 @@ export function WorkSection({
 
   const header = (
     <div className="flex flex-col gap-[var(--gap-2xs,8px)] px-[var(--pad-s,16px)] py-[var(--gap-s,16px)] w-full" style={{ backgroundColor: headerBg }}>
-      <div className="flex items-start justify-between w-full gap-[var(--gap-2xs,8px)]">
+      <div className="flex items-start w-full gap-[var(--gap-2xs,8px)]">
+        {/* Тогл слева (версия 2) */}
+        {toggleLeft && (
+          <div className="shrink-0" onClick={e => e.stopPropagation()}>
+            <Toggle checked={active} onChange={v => onToggle?.(v)} />
+          </div>
+        )}
         <p
           className="flex-1 font-inter font-normal text-[length:var(--f-size-s,16px)] leading-[var(--f-lh-m,24px)] line-clamp-2"
           style={{ color: nameColor }}
@@ -167,7 +177,7 @@ export function WorkSection({
           {name}
         </p>
         <div
-          className="flex items-center gap-[var(--gap-3xs,4px)] shrink-0"
+          className="flex items-center gap-[var(--gap-3xs,4px)] shrink-0 self-start"
           onClick={e => e.stopPropagation()}
         >
           <AnimatedPrice
@@ -175,7 +185,7 @@ export function WorkSection({
             className="font-inter font-semibold text-[length:var(--f-size-s,16px)] leading-[var(--f-lh-m,24px)] w-[85px] text-right"
             style={{ color: priceColor, fontFeatureSettings: "'lnum' 1, 'tnum' 1" } as React.CSSProperties}
           />
-          <Toggle checked={active} onChange={v => onToggle?.(v)} />
+          {!toggleLeft && <Toggle checked={active} onChange={v => onToggle?.(v)} />}
         </div>
       </div>
       <p
@@ -198,28 +208,36 @@ export function WorkSection({
       onMouseLeave={() => setHovered(false)}
     >
       <button
-        onClick={() => setIsOpen(v => !v)}
-        className="w-full text-left cursor-pointer"
+        onClick={() => canExpand && setIsOpen(v => !v)}
+        className={`block w-full p-0 text-left ${canExpand ? 'cursor-pointer' : 'cursor-default'}`}
       >
         {header}
       </button>
 
       <AnimatedHeight open={isOpen}>
-        <WorkContainer
-          active={active && workActive}
-          onToggle={handleWorkToggle}
-          onTotalChange={handleWorkTotalChange}
-          works={works}
-          onWorkClick={handleWorkClick}
-        />
-        <div className="h-px bg-[var(--grey-150,#e0e0e0)] w-full" />
-        <MaterialsSection
-          active={active && materialsActive}
-          onToggle={handleMaterialsToggle}
-          onTotalChange={handleMaterialsTotalChange}
-          initialMaterials={materials}
-          onMaterialClick={handleMaterialClick}
-        />
+        {works.length > 0 && (
+          <WorkContainer
+            active={active && workActive}
+            onToggle={handleWorkToggle}
+            onTotalChange={handleWorkTotalChange}
+            works={works}
+            onWorkClick={handleWorkClick}
+            toggleLeft={toggleLeft}
+          />
+        )}
+        {works.length > 0 && materials.length > 0 && (
+          <div className="h-px bg-[var(--grey-150,#e0e0e0)] w-full" />
+        )}
+        {materials.length > 0 && (
+          <MaterialsSection
+            active={active && materialsActive}
+            onToggle={handleMaterialsToggle}
+            onTotalChange={handleMaterialsTotalChange}
+            initialMaterials={materials}
+            onMaterialClick={handleMaterialClick}
+            toggleLeft={toggleLeft}
+          />
+        )}
       </AnimatedHeight>
 
       <ItemPopup

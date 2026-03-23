@@ -13,6 +13,7 @@ type MaterialsSectionProps = {
   onMaterialClick?: (data: MaterialClickData) => void
   hideHeader?: boolean
   noFill?: boolean
+  toggleLeft?: boolean
 }
 
 /** Секция «Материалы» с тоглом и списком позиций. */
@@ -30,6 +31,7 @@ export function MaterialsSection({
   onMaterialClick,
   hideHeader = false,
   noFill = false,
+  toggleLeft = false,
 }: MaterialsSectionProps) {
   const [items, setItems] = useState<InternalMaterialEntry[]>(() =>
     initialMaterials.map(m => ({ ...m, itemActive: true }))
@@ -66,11 +68,12 @@ export function MaterialsSection({
   return (
     <div
       className="flex flex-col gap-[24px] px-[var(--pad-s,16px)] py-[var(--gap-s,16px)] w-full"
-      style={{ backgroundColor: !noFill && !active ? 'var(--grey-100, #ebebeb)' : 'var(--grey-0, white)' }}
+      style={{ backgroundColor: noFill ? 'transparent' : !active ? 'var(--grey-100, #ebebeb)' : 'var(--grey-0, white)' }}
     >
       {/* Заголовок */}
       {!hideHeader && (
-        <div className="flex items-center justify-between w-full">
+        <div className="flex items-center w-full gap-[var(--gap-2xs,8px)]">
+          {toggleLeft && <Toggle checked={active} onChange={v => onToggle?.(v)} />}
           <p
             className="flex-1 font-inter font-semibold text-[length:var(--f-size-s,16px)] leading-[var(--f-lh-m,24px)] truncate"
             style={{ color: titleColor }}
@@ -83,7 +86,7 @@ export function MaterialsSection({
               className="font-inter font-semibold text-[length:var(--f-size-s,16px)] leading-[var(--f-lh-m,24px)] w-[85px] text-right"
               style={{ color: priceColor, fontFeatureSettings: "'lnum' 1, 'tnum' 1" }}
             />
-            <Toggle checked={active} onChange={v => onToggle?.(v)} />
+            {!toggleLeft && <Toggle checked={active} onChange={v => onToggle?.(v)} />}
           </div>
         </div>
       )}

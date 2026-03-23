@@ -15,19 +15,19 @@ import lumaImg from '../img/picture=luma.png'
 import cameraImg from '../img/picture=camera.png'
 import coinsImg from '../img/picture=coins.png'
 import toiletImg from '../img/picture=toilet.png'
-import { buildCat1, buildCat2, buildCat3, buildCat4, buildMebel } from '../calc'
+import { buildCat1, buildCat2, buildCat3, buildCat4, buildMebel, buildCat6 } from '../calc'
 
 const AREA_PRESETS = [25, 35, 50, 75]
 const CONDITIONS = ['Косметика', 'White box', 'Бетон']
 const CEILING_OPTIONS = ['до 2,7 м', '3 м', 'от 3,5']
 
 const CATEGORIES = [
-  { name: 'Внутренняя отделка', imageUrl: wallImg   },
-  { name: 'Электрика и свет',   imageUrl: lumaImg   },
-  { name: 'Безопасность и IT',  imageUrl: cameraImg },
-  { name: 'Санузел',            imageUrl: toiletImg },
-  { name: 'Мебель',             imageUrl: sofaImg   },
-  { name: 'Резерв 12%',         imageUrl: coinsImg  },
+  { name: 'Внутренняя отделка',  imageUrl: wallImg   },
+  { name: 'Электрика и свет',    imageUrl: lumaImg   },
+  { name: 'Безопасность и IT',   imageUrl: cameraImg },
+  { name: 'Санузел',             imageUrl: toiletImg },
+  { name: 'Мебель',              imageUrl: sofaImg   },
+  { name: 'Резерв и расходники', imageUrl: coinsImg  },
 ]
 
 // ─── Переключатель дизайн-системы (Comfort / Tiny) ───────────────────────
@@ -66,6 +66,7 @@ export function SimplePage() {
   const [condition, setCondition] = useState(0)
   const [freeLayout, setFreeLayout] = useState(false)
   const [ceiling, setCeiling] = useState(1)
+  const [layoutVersion, setLayoutVersion] = useState<1 | 2>(1)
 
   const area = Math.max(1, parseFloat(areaStr.replace(',', '.')) || 0)
 
@@ -85,15 +86,6 @@ export function SimplePage() {
   const cat4Sections = useMemo(() => buildCat4(calcParams), [calcParams])
   const mebelItems   = useMemo(() => buildMebel(area), [area])
 
-  const categorySections: (UnitSection[] | undefined)[] = [
-    cat1Sections,
-    cat2Sections,
-    cat3Sections,
-    cat4Sections,
-    undefined, // Мебель — flatMaterials
-    undefined, // Резерв — не раскрывается
-  ]
-
   // Тоталы из каждого CalculationUnit
   const [unitTotals, setUnitTotals] = useState<Record<number, number>>({})
 
@@ -112,12 +104,23 @@ export function SimplePage() {
     return Math.round(base * 0.12)
   }, [unitTotals])
 
-  const computedTotal = [0, 1, 2, 3, 4].reduce((sum, i) => sum + (unitTotals[i] ?? 0), 0) + reserve
+  const cat6Sections = useMemo(() => buildCat6(reserve, area), [reserve, area])
+
+  const categorySections: (UnitSection[] | undefined)[] = [
+    cat1Sections,
+    cat2Sections,
+    cat3Sections,
+    cat4Sections,
+    undefined,    // Мебель — flatMaterials
+    cat6Sections, // Резерв и расходники
+  ]
+
+  const computedTotal = [0, 1, 2, 3, 4, 5].reduce((sum, i) => sum + (unitTotals[i] ?? 0), 0)
 
   const priceBoxRows: PriceRow[] = CATEGORIES.map((cat, i) => ({
     name: cat.name,
     imageUrl: cat.imageUrl,
-    value: i === 5 ? reserve : (unitTotals[i] ?? 0),
+    value: unitTotals[i] ?? 0,
   }))
 
   return (
@@ -128,12 +131,31 @@ export function SimplePage() {
         {/* ─── Контент ─── */}
         <div className="w-full">
 
-          {/* Хедер: заголовок + переключатель режимов */}
+          {/* Хедер: заголовок + переключатели */}
           <div className="flex items-center justify-between gap-[var(--gap-2xs,8px)] px-[var(--pad-m,24px)] pt-[var(--pad-m,24px)] mx-[var(--gap-3xs,4px)]">
             <p className="font-inter font-semibold text-[length:var(--f-size-xl,30px)] leading-[var(--f-lh-l,40px)] text-[color:var(--grey-850,#313131)]">
               Калькулятор ремонта ПВЗ
             </p>
-            <ModeSwitcher />
+            <div className="flex items-center gap-[var(--gap-2xs,8px)] shrink-0">
+              {/* Версия 1/2 */}
+              <div className="flex items-center gap-[2px] p-[2px] rounded-[8px] bg-[var(--grey-0,white)] border border-[var(--grey-150,#e0e0e0)]">
+                {([1, 2] as const).map(v => (
+                  <button
+                    key={v}
+                    onClick={() => setLayoutVersion(v)}
+                    className={
+                      'px-2 py-[3px] rounded-[6px] font-inter font-normal text-[14px] leading-5 cursor-pointer transition-colors ' +
+                      (layoutVersion === v
+                        ? 'bg-[var(--grey-850,#313131)] text-white'
+                        : 'text-[var(--grey-850,#313131)] hover:bg-[var(--grey-100,#ebebeb)]')
+                    }
+                  >
+                    {v}
+                  </button>
+                ))}
+              </div>
+              <ModeSwitcher />
+            </div>
           </div>
 
           {/* Форма */}
@@ -204,21 +226,14 @@ export function SimplePage() {
               <CalculationUnit
                 key={i}
                 name={cat.name}
-                nameNode={cat.name === 'Резерв 12%' ? (
-                  <><span>Резерв </span><span style={{ color: 'var(--grey-500, #999999)' }}>12%</span></>
-                ) : undefined}
+                nameNode={undefined}
                 imageUrl={cat.imageUrl}
                 onTotalChange={callbacksRef.current[i]}
                 sections={categorySections[i]}
-                flatMaterials={
-                  cat.name === 'Мебель'
-                    ? mebelItems
-                    : cat.name === 'Резерв 12%'
-                    ? [{ materialText: 'Резерв 12% от общей сметы', price: reserve, quantity: 1 }]
-                    : undefined
-                }
-                canExpand={cat.name !== 'Резерв 12%'}
+                flatMaterials={cat.name === 'Мебель' ? mebelItems : undefined}
+                canExpand={true}
                 initialEnabled={true}
+                toggleLeft={layoutVersion === 2}
               />
             ))}
             <Banner />
