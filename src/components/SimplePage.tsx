@@ -132,8 +132,8 @@ export function SimplePage() {
         <div className="w-full">
 
           {/* Хедер: заголовок + переключатели */}
-          <div className="flex items-center justify-between gap-[var(--gap-2xs,8px)] px-[var(--pad-m,24px)] pt-[var(--pad-m,24px)] mx-[var(--gap-3xs,4px)]">
-            <p className="min-w-0 font-inter font-semibold text-[length:var(--f-size-xl,30px)] leading-[var(--f-lh-l,40px)] text-[color:var(--grey-850,#313131)]">
+          <div className="flex flex-wrap items-center gap-[var(--gap-2xs,8px)] px-[var(--pad-m,24px)] pt-[var(--pad-m,24px)] mx-[var(--gap-3xs,4px)]">
+            <p className="flex-1 min-w-[200px] font-inter font-semibold text-[length:var(--f-size-xl,30px)] leading-[var(--f-lh-l,40px)] text-[color:var(--grey-850,#313131)]">
               Калькулятор ремонта ПВЗ
             </p>
             <div className="flex items-center gap-[var(--gap-2xs,8px)] shrink-0">
