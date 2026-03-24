@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+import { getMaterialDescription, getMaterialSpecs } from '../descriptions'
+import { registerPopup, closeOtherPopups } from '../popupBus'
 import { Icon } from './Icon'
 import { Toggle } from './Toggle'
 import { WorkSection } from './WorkSection'
@@ -166,9 +168,26 @@ export function CalculationUnit({
   }, [scaledFlatMaterials])
 
   const [flatPopupData, setFlatPopupData] = useState<PopupData>(null)
+  const [flatAnimKey, setFlatAnimKey] = useState(0)
+  const flatPopupDataRef = useRef<PopupData>(null)
+  flatPopupDataRef.current = flatPopupData
+
+  const closeFlatPopup = useCallback(() => setFlatPopupData(null), [])
+  useEffect(() => registerPopup(closeFlatPopup), [closeFlatPopup])
+
+  const openFlatPopup = useCallback((newData: PopupData) => {
+    closeOtherPopups(closeFlatPopup)
+    setFlatAnimKey(k => k + 1)
+    setFlatPopupData(newData)
+  }, [closeFlatPopup])
 
   const handleFlatMaterialClick = useCallback((data: MaterialClickData) => {
-    setFlatPopupData({
+    // Повторный клик на уже открытый материал — закрываем
+    if (flatPopupDataRef.current?.name === data.name) {
+      setFlatPopupData(null)
+      return
+    }
+    openFlatPopup({
       name: data.name,
       price: data.price,
       unitPrice: data.unitPrice,
@@ -176,7 +195,8 @@ export function CalculationUnit({
       included: data.active,
       gender: 'f',
       showDownload: true,
-      description: 'Какое-то описание',
+      description: getMaterialDescription(data.name),
+      specs: getMaterialSpecs(data.name),
       onQuantityChange: (qty) => {
         setFlatPopupData(prev => prev ? { ...prev, quantity: qty, price: (prev.unitPrice ?? 0) * qty } : null)
         data.onQuantityChange(qty)
@@ -186,7 +206,7 @@ export function CalculationUnit({
         data.onActiveChange(v)
       },
     })
-  }, [])
+  }, [openFlatPopup])
 
   const unitTotal = scaledFlatMaterials
     ? (toggle ? flatTotal : 0)
@@ -341,6 +361,7 @@ export function CalculationUnit({
               noFill
             />
             <ItemPopup
+              key={flatAnimKey}
               open={flatPopupData !== null}
               data={flatPopupData}
               onClose={() => setFlatPopupData(null)}

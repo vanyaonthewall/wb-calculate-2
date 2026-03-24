@@ -7,6 +7,7 @@ export type MaterialEntry = {
   imageUrl?: string
   price: number
   quantity: number
+  description?: string
 }
 
 export type MaterialClickData = {
@@ -15,6 +16,7 @@ export type MaterialClickData = {
   unitPrice: number
   quantity: number
   active: boolean
+  description?: string
   onActiveChange: (v: boolean) => void
   onQuantityChange: (qty: number) => void
 }
@@ -65,11 +67,17 @@ export function Material({
         onClick={() => onPopupClick?.()}
       >
         <div
-          className="shrink-0 w-[72px] h-[72px] rounded-[var(--round-s,12px)] overflow-hidden transition-colors"
+          className="shrink-0 w-[72px] h-[72px] rounded-[var(--round-s,12px)] overflow-hidden transition-colors flex items-center justify-center"
           style={{ backgroundColor: leftHovered && active ? 'var(--grey-300, #c2c2c2)' : 'var(--grey-150, #e0e0e0)' }}
         >
-          {imageUrl && (
+          {imageUrl ? (
             <img src={imageUrl} alt={materialText} className="w-full h-full object-cover" />
+          ) : (
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="5" width="22" height="18" rx="2" stroke="var(--grey-400,#adadad)" strokeWidth="1.5" fill="none"/>
+              <circle cx="9" cy="11" r="2" fill="var(--grey-400,#adadad)"/>
+              <path d="M3 19l6-5 4 4 3-3 6 6" stroke="var(--grey-400,#adadad)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
           )}
         </div>
         <div className="flex-1 min-w-0 overflow-hidden">

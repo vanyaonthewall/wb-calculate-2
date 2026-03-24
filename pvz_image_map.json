@@ -1,0 +1,422 @@
+{
+  "meta": {
+    "version": "1.0",
+    "description": "Маппинг превью-изображений для всех позиций калькулятора. Агент использует search_query для поиска/скачивания фото, source_url_hint — для прямого скачивания с сайта производителя.",
+    "usage": "1. Пройти по списку. 2. Для каждой позиции скачать изображение по source_url_hint или найти по search_query. 3. Сохранить как images/{category}/{id}.jpg. 4. Поле local_path показывает куда сохранять."
+  },
+
+  "images": [
+
+    {
+      "id": "work_demolition",
+      "type": "work",
+      "category": "1_finishing",
+      "name": "Демонтаж старого покрытия",
+      "local_path": "images/works/work_demolition.jpg",
+      "search_query": "демонтаж штукатурки стен строительство",
+      "source_url_hint": "https://www.google.com/search?q=демонтаж+штукатурки+стен&tbm=isch",
+      "style": "photo"
+    },
+    {
+      "id": "work_plaster",
+      "type": "work",
+      "category": "1_finishing",
+      "name": "Штукатурка стен",
+      "local_path": "images/works/work_plaster.jpg",
+      "search_query": "штукатурка стен маяки Knauf Rotband",
+      "source_url_hint": "https://www.knauf.ru/produkty/shtukaturka/knauf-rotband/",
+      "style": "photo"
+    },
+    {
+      "id": "work_putty",
+      "type": "work",
+      "category": "1_finishing",
+      "name": "Финишная шпаклёвка стен",
+      "local_path": "images/works/work_putty.jpg",
+      "search_query": "финишная шпаклёвка стен широкий шпатель",
+      "source_url_hint": "https://www.google.com/search?q=финишная+шпаклёвка+стен&tbm=isch",
+      "style": "photo"
+    },
+    {
+      "id": "work_primer",
+      "type": "work",
+      "category": "1_finishing",
+      "name": "Грунтовка стен",
+      "local_path": "images/works/work_primer.jpg",
+      "search_query": "грунтовка стен валиком",
+      "source_url_hint": "https://www.google.com/search?q=грунтовка+стен+валик&tbm=isch",
+      "style": "photo"
+    },
+    {
+      "id": "work_paint_main",
+      "type": "work",
+      "category": "1_finishing",
+      "name": "Покраска основных стен",
+      "local_path": "images/works/work_paint_main.jpg",
+      "search_query": "покраска стен светло-серый интерьер магазин",
+      "source_url_hint": "https://www.google.com/search?q=покраска+стен+интерьер+серый&tbm=isch",
+      "style": "photo"
+    },
+    {
+      "id": "work_brandwall",
+      "type": "work",
+      "category": "1_finishing",
+      "name": "Поклейка бренд-стены",
+      "local_path": "images/works/work_brandwall.jpg",
+      "search_query": "wildberries ПВЗ интерьер фиолетовая стена",
+      "source_url_hint": "https://www.google.com/search?q=ПВЗ+wildberries+интерьер&tbm=isch",
+      "style": "photo"
+    },
+    {
+      "id": "work_screed",
+      "type": "work",
+      "category": "1_finishing",
+      "name": "Устройство стяжки пола",
+      "local_path": "images/works/work_screed.jpg",
+      "search_query": "стяжка пола цементная правило маяки",
+      "source_url_hint": "https://www.google.com/search?q=стяжка+пола+маяки&tbm=isch",
+      "style": "photo"
+    },
+    {
+      "id": "work_tile",
+      "type": "work",
+      "category": "1_finishing",
+      "name": "Укладка керамогранита",
+      "local_path": "images/works/work_tile.jpg",
+      "search_query": "укладка керамогранита 60x60 плитка пол",
+      "source_url_hint": "https://www.google.com/search?q=укладка+керамогранита+60x60&tbm=isch",
+      "style": "photo"
+    },
+    {
+      "id": "work_linoleum_client",
+      "type": "work",
+      "category": "1_finishing",
+      "name": "Укладка линолеума (клиент)",
+      "local_path": "images/works/work_linoleum_client.jpg",
+      "search_query": "укладка коммерческого линолеума Tarkett",
+      "source_url_hint": "https://tarkett.ru/collections/acczent-pro",
+      "style": "photo"
+    },
+    {
+      "id": "work_grillato",
+      "type": "work",
+      "category": "1_finishing",
+      "name": "Монтаж потолка грильято",
+      "local_path": "images/works/work_grillato.jpg",
+      "search_query": "потолок грильято 100x100 белый монтаж",
+      "source_url_hint": "https://www.google.com/search?q=потолок+грильято+монтаж&tbm=isch",
+      "style": "photo"
+    },
+    {
+      "id": "work_partition_gkl",
+      "type": "work",
+      "category": "1_finishing",
+      "name": "Монтаж перегородки ГКЛ",
+      "local_path": "images/works/work_partition_gkl.jpg",
+      "search_query": "перегородка гипсокартон каркас монтаж",
+      "source_url_hint": "https://www.knauf.ru/",
+      "style": "photo"
+    },
+    {
+      "id": "work_cable",
+      "type": "work",
+      "category": "2_electrical",
+      "name": "Штробление и прокладка кабелей",
+      "local_path": "images/works/work_cable.jpg",
+      "search_query": "штробление стен кабель электрика прокладка",
+      "source_url_hint": "https://www.google.com/search?q=штробление+стен+кабель&tbm=isch",
+      "style": "photo"
+    },
+    {
+      "id": "work_switchboard",
+      "type": "work",
+      "category": "2_electrical",
+      "name": "Монтаж электрощитка",
+      "local_path": "images/works/work_switchboard.jpg",
+      "search_query": "электрощиток навесной автоматы монтаж",
+      "source_url_hint": "https://www.google.com/search?q=электрощиток+монтаж+автоматы&tbm=isch",
+      "style": "photo"
+    },
+    {
+      "id": "work_lights_client",
+      "type": "work",
+      "category": "2_electrical",
+      "name": "Монтаж светильников (клиент)",
+      "local_path": "images/works/work_lights_client.jpg",
+      "search_query": "линейный светильник 900мм LED накладной белый",
+      "source_url_hint": "https://www.google.com/search?q=линейный+светильник+900мм+накладной+белый&tbm=isch",
+      "style": "photo"
+    },
+    {
+      "id": "work_cameras",
+      "type": "work",
+      "category": "3_security",
+      "name": "Монтаж камер видеонаблюдения",
+      "local_path": "images/works/work_cameras.jpg",
+      "search_query": "монтаж камеры видеонаблюдения IP Hikvision",
+      "source_url_hint": "https://www.hikvision.com/ru/",
+      "style": "photo"
+    },
+    {
+      "id": "work_fire_alarm",
+      "type": "work",
+      "category": "3_security",
+      "name": "Монтаж пожарной сигнализации",
+      "local_path": "images/works/work_fire_alarm.jpg",
+      "search_query": "монтаж пожарная сигнализация датчик дыма",
+      "source_url_hint": "https://www.google.com/search?q=монтаж+пожарная+сигнализация&tbm=isch",
+      "style": "photo"
+    },
+
+    {
+      "id": "mat_rotband",
+      "type": "material",
+      "category": "1_finishing",
+      "name": "Knauf Rotband 30 кг",
+      "local_path": "images/materials/mat_rotband.jpg",
+      "search_query": "Knauf Rotband 30кг мешок",
+      "source_url_hint": "https://www.knauf.ru/produkty/shtukaturka/knauf-rotband/",
+      "style": "product_photo"
+    },
+    {
+      "id": "mat_finish_putty",
+      "type": "material",
+      "category": "1_finishing",
+      "name": "Knauf Rotband Finish 25 кг",
+      "local_path": "images/materials/mat_finish_putty.jpg",
+      "search_query": "Knauf Rotband Finish шпаклёвка мешок",
+      "source_url_hint": "https://www.knauf.ru/",
+      "style": "product_photo"
+    },
+    {
+      "id": "mat_primer",
+      "type": "material",
+      "category": "1_finishing",
+      "name": "Knauf Tiefengrund 10 л",
+      "local_path": "images/materials/mat_primer.jpg",
+      "search_query": "Knauf Tiefengrund грунтовка канистра",
+      "source_url_hint": "https://www.knauf.ru/",
+      "style": "product_photo"
+    },
+    {
+      "id": "mat_paint_dulux_grey",
+      "type": "material",
+      "category": "1_finishing",
+      "name": "Dulux 10BB 83/012",
+      "local_path": "images/materials/mat_paint_dulux_grey.jpg",
+      "search_query": "Dulux краска 9л банка интерьерная матовая",
+      "source_url_hint": "https://www.dulux.ru/",
+      "style": "product_photo"
+    },
+    {
+      "id": "mat_paint_tikkurila_violet",
+      "type": "material",
+      "category": "1_finishing",
+      "name": "Tikkurila OPC$ F 343",
+      "local_path": "images/materials/mat_paint_tikkurila_violet.jpg",
+      "search_query": "Tikkurila краска банка 9л фиолетовый",
+      "source_url_hint": "https://www.tikkurila.ru/",
+      "style": "product_photo"
+    },
+    {
+      "id": "mat_tile_kerama",
+      "type": "material",
+      "category": "1_finishing",
+      "name": "Kerama Marazzi Terrazzo 60×60",
+      "local_path": "images/materials/mat_tile_kerama.jpg",
+      "search_query": "Kerama Marazzi Terrazzo 566324008 60x60 серый",
+      "source_url_hint": "https://www.kerama-marazzi.com/catalog/tile/terrazzo-566324008/",
+      "style": "product_photo"
+    },
+    {
+      "id": "mat_linoleum",
+      "type": "material",
+      "category": "1_finishing",
+      "name": "Tarkett Acczent Pro 712",
+      "local_path": "images/materials/mat_linoleum.jpg",
+      "search_query": "Tarkett Acczent Pro линолеум коммерческий",
+      "source_url_hint": "https://tarkett.ru/collections/acczent-pro",
+      "style": "product_photo"
+    },
+    {
+      "id": "mat_grillato",
+      "type": "material",
+      "category": "1_finishing",
+      "name": "Система грильято 100×100 белая",
+      "local_path": "images/materials/mat_grillato.jpg",
+      "search_query": "потолок грильято 100x100 ячейка 10x10 белый",
+      "source_url_hint": "https://www.google.com/search?q=грильято+потолок+100x100+белый&tbm=isch",
+      "style": "product_photo"
+    },
+    {
+      "id": "mat_camera",
+      "type": "material",
+      "category": "3_security",
+      "name": "Камера IP 2 Мп Hikvision",
+      "local_path": "images/materials/mat_camera.jpg",
+      "search_query": "Hikvision IP камера 2mp купольная",
+      "source_url_hint": "https://www.hikvision.com/ru/products/IP-Camera/",
+      "style": "product_photo"
+    },
+    {
+      "id": "mat_nvr",
+      "type": "material",
+      "category": "3_security",
+      "name": "NVR видеорегистратор",
+      "local_path": "images/materials/mat_nvr.jpg",
+      "search_query": "Hikvision NVR видеорегистратор 4 канала",
+      "source_url_hint": "https://www.hikvision.com/ru/products/network-video-recorders/",
+      "style": "product_photo"
+    },
+    {
+      "id": "mat_extinguisher",
+      "type": "material",
+      "category": "3_security",
+      "name": "Огнетушитель ОП-2",
+      "local_path": "images/materials/mat_extinguisher.jpg",
+      "search_query": "огнетушитель порошковый ОП-2 красный",
+      "source_url_hint": "https://www.google.com/search?q=огнетушитель+ОП-2&tbm=isch",
+      "style": "product_photo"
+    },
+    {
+      "id": "mat_laptop",
+      "type": "material",
+      "category": "3_security",
+      "name": "Ноутбук для сотрудника",
+      "local_path": "images/materials/mat_laptop.jpg",
+      "search_query": "ноутбук офисный 15 дюймов белый фон",
+      "source_url_hint": "https://www.google.com/search?q=ноутбук+офисный+белый+фон&tbm=isch",
+      "style": "product_photo"
+    },
+    {
+      "id": "mat_scanner",
+      "type": "material",
+      "category": "3_security",
+      "name": "Сканер штрих-кодов",
+      "local_path": "images/materials/mat_scanner.jpg",
+      "search_query": "сканер штрихкодов Honeywell ручной USB",
+      "source_url_hint": "https://www.google.com/search?q=Honeywell+сканер+штрихкодов&tbm=isch",
+      "style": "product_photo"
+    },
+    {
+      "id": "mat_router",
+      "type": "material",
+      "category": "3_security",
+      "name": "Роутер Wi-Fi",
+      "local_path": "images/materials/mat_router.jpg",
+      "search_query": "TP-Link роутер Wi-Fi белый",
+      "source_url_hint": "https://www.tp-link.com/ru/",
+      "style": "product_photo"
+    },
+    {
+      "id": "mat_fitting_room",
+      "type": "material",
+      "category": "5_furniture",
+      "name": "Примерочная 120×120×200 см",
+      "local_path": "images/materials/mat_fitting_room.jpg",
+      "search_query": "примерочная кабина ПВЗ wildberries 2026",
+      "source_url_hint": "https://www.google.com/search?q=примерочная+wildberries+ПВЗ&tbm=isch",
+      "style": "product_photo"
+    },
+    {
+      "id": "mat_bench_white",
+      "type": "material",
+      "category": "5_furniture",
+      "name": "Скамейка белая WB",
+      "local_path": "images/materials/mat_bench_white.jpg",
+      "search_query": "скамейка белая примерочная WB 900x360",
+      "source_url_hint": "https://www.google.com/search?q=скамейка+wildberries+примерочная&tbm=isch",
+      "style": "product_photo"
+    },
+    {
+      "id": "mat_bench_pink",
+      "type": "material",
+      "category": "5_furniture",
+      "name": "Скамейка розовая WB",
+      "local_path": "images/materials/mat_bench_pink.jpg",
+      "search_query": "скамейка розовая WB зал клиентский",
+      "source_url_hint": "https://www.google.com/search?q=скамейка+розовая+wildberries&tbm=isch",
+      "style": "product_photo"
+    },
+    {
+      "id": "mat_desk_2cells",
+      "type": "material",
+      "category": "5_furniture",
+      "name": "Стол выдачи на 2 ячейки",
+      "local_path": "images/materials/mat_desk_2cells.jpg",
+      "search_query": "стол выдачи wildberries ПВЗ 2 ячейки",
+      "source_url_hint": "https://www.google.com/search?q=стол+выдачи+wildberries+ПВЗ&tbm=isch",
+      "style": "product_photo"
+    },
+    {
+      "id": "mat_desk_3cells",
+      "type": "material",
+      "category": "5_furniture",
+      "name": "Стол выдачи на 3 ячейки",
+      "local_path": "images/materials/mat_desk_3cells.jpg",
+      "search_query": "стол выдачи wildberries 3 ячейки",
+      "source_url_hint": "https://www.google.com/search?q=стол+выдачи+wildberries+3+ячейки&tbm=isch",
+      "style": "product_photo"
+    },
+    {
+      "id": "mat_manager_desk",
+      "type": "material",
+      "category": "5_furniture",
+      "name": "Стол менеджера WB",
+      "local_path": "images/materials/mat_manager_desk.jpg",
+      "search_query": "стол менеджера wildberries ПВЗ 800x800",
+      "source_url_hint": "https://www.google.com/search?q=стол+менеджера+wildberries&tbm=isch",
+      "style": "product_photo"
+    },
+    {
+      "id": "mat_shelf",
+      "type": "material",
+      "category": "5_furniture",
+      "name": "Стеллаж металлический складской",
+      "local_path": "images/materials/mat_shelf.jpg",
+      "search_query": "стеллаж металлический складской 4 полки 1500мм",
+      "source_url_hint": "https://www.google.com/search?q=стеллаж+металлический+складской+4+полки&tbm=isch",
+      "style": "product_photo"
+    },
+    {
+      "id": "mat_mirror_hall",
+      "type": "material",
+      "category": "5_furniture",
+      "name": "Зеркало в зал WB",
+      "local_path": "images/materials/mat_mirror_hall.jpg",
+      "search_query": "зеркало настенное скруглённые углы 700x1300",
+      "source_url_hint": "https://www.google.com/search?q=зеркало+скруглённые+углы+700x1300&tbm=isch",
+      "style": "product_photo"
+    },
+    {
+      "id": "mat_bin",
+      "type": "material",
+      "category": "5_furniture",
+      "name": "Урна WB",
+      "local_path": "images/materials/mat_bin.jpg",
+      "search_query": "урна мусорная wildberries ПВЗ фирменная",
+      "source_url_hint": "https://www.google.com/search?q=урна+wildberries+ПВЗ&tbm=isch",
+      "style": "product_photo"
+    },
+    {
+      "id": "mat_air_curtain",
+      "type": "material",
+      "category": "2_electrical",
+      "name": "Тепловая завеса",
+      "local_path": "images/materials/mat_air_curtain.jpg",
+      "search_query": "тепловая завеса электрическая над дверью",
+      "source_url_hint": "https://www.google.com/search?q=тепловая+завеса+электрическая&tbm=isch",
+      "style": "product_photo"
+    },
+    {
+      "id": "mat_ac",
+      "type": "material",
+      "category": "2_electrical",
+      "name": "Сплит-система",
+      "local_path": "images/materials/mat_ac.jpg",
+      "search_query": "сплит система кондиционер настенный белый",
+      "source_url_hint": "https://www.google.com/search?q=сплит-система+настенная+белый&tbm=isch",
+      "style": "product_photo"
+    }
+  ]
+}

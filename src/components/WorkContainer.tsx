@@ -6,12 +6,14 @@ import { AnimatedPrice } from './AnimatedPrice'
 export type WorkEntry = {
   workName: string
   price: number
+  description?: string
 }
 
 export type WorkClickData = {
   name: string
   price: number
   active: boolean
+  description?: string
   onActiveChange: (v: boolean) => void
 }
 
@@ -95,6 +97,7 @@ export function WorkContainer({
               name: w.workName,
               price: w.price,
               active: active && itemActive[i] !== false,
+              description: w.description,
               onActiveChange: (v) => handleItemActiveChange(i, v),
             })}
           />

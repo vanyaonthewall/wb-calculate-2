@@ -6,6 +6,8 @@ import { MaterialEntry, MaterialClickData } from './Material'
 import { AnimatedHeight } from './AnimatedHeight'
 import { AnimatedPrice } from './AnimatedPrice'
 import { ItemPopup, PopupData } from './ItemPopup'
+import { getWorkDescription, getMaterialDescription, getMaterialSpecs } from '../descriptions'
+import { registerPopup, closeOtherPopups } from '../popupBus'
 
 type WorkSectionProps = {
   name?: string
@@ -51,6 +53,20 @@ export function WorkSection({
   )
 
   const [popupData, setPopupData] = useState<PopupData>(null)
+  const [animKey, setAnimKey] = useState(0)
+  const popupDataRef = useRef<PopupData>(null)
+  popupDataRef.current = popupData
+
+  // Регистрируем в шине попапов — при открытии любого попапа все остальные закрываются
+  const closeThisPopup = useCallback(() => setPopupData(null), [])
+  useEffect(() => registerPopup(closeThisPopup), [closeThisPopup])
+
+  // Открыть попап: закрыть остальные, сменить animKey (remount → CSS анимация сработает)
+  const openPopup = useCallback((newData: PopupData) => {
+    closeOtherPopups(closeThisPopup)
+    setAnimKey(k => k + 1)
+    setPopupData(newData)
+  }, [closeThisPopup])
 
   const displayTotal =
     (workActive ? workSubTotal : 0) + (materialsActive ? materialsSubTotal : 0)
@@ -126,28 +142,39 @@ export function WorkSection({
   )
 
   const handleWorkClick = useCallback((data: WorkClickData) => {
-    setPopupData({
+    // Повторный клик на уже открытую работу — закрываем
+    if (popupDataRef.current?.name === data.name) {
+      setPopupData(null)
+      return
+    }
+    openPopup({
       name: data.name,
       price: data.price,
       included: data.active,
       gender: 'f',
-      description: 'Какое-то описание',
+      description: getWorkDescription(data.name),
       onIncludedChange: (v) => {
         setPopupData(prev => prev ? { ...prev, included: v } : null)
         data.onActiveChange(v)
       },
     })
-  }, [])
+  }, [openPopup])
 
   const handleMaterialClick = useCallback((data: MaterialClickData) => {
-    setPopupData({
+    // Повторный клик на уже открытый материал — закрываем
+    if (popupDataRef.current?.name === data.name) {
+      setPopupData(null)
+      return
+    }
+    openPopup({
       name: data.name,
       price: data.price,
       unitPrice: data.unitPrice,
       quantity: data.quantity,
       included: data.active,
       gender: 'm',
-      description: 'Какое-то описание',
+      description: getMaterialDescription(data.name),
+      specs: getMaterialSpecs(data.name),
       onQuantityChange: (qty) => {
         setPopupData(prev => prev ? { ...prev, quantity: qty, price: (prev.unitPrice ?? 0) * qty } : null)
         data.onQuantityChange(qty)
@@ -157,7 +184,7 @@ export function WorkSection({
         data.onActiveChange(v)
       },
     })
-  }, [])
+  }, [openPopup])
 
   const headerBg = 'var(--grey-50, #f5f5f5)'
 
@@ -241,6 +268,7 @@ export function WorkSection({
       </AnimatedHeight>
 
       <ItemPopup
+        key={animKey}
         open={popupData !== null}
         data={popupData}
         onClose={() => setPopupData(null)}

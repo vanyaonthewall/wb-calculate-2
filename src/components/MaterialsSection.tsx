@@ -105,6 +105,7 @@ export function MaterialsSection({
               unitPrice: m.price,
               quantity: m.quantity,
               active: active && m.itemActive,
+              description: m.description,
               onActiveChange: (v) => handleItemActiveChange(i, v),
               onQuantityChange: (qty) => handleQtyChange(i, qty),
             })}
