@@ -247,7 +247,8 @@ export function SimplePage() {
       </div>
 
       {/* PriceBox — всегда fixed снизу, max-w-[800px] по центру */}
-      <div className="fixed bottom-0 left-0 right-0 z-10 flex justify-center overflow-x-clip">
+      {/* bg-[var(--grey-50)] закрывает safe-area-inset-bottom под скруглёнными углами в Telegram/iOS */}
+      <div className="fixed bottom-0 left-0 right-0 z-10 flex justify-center overflow-x-clip bg-[var(--grey-50,#f5f5f5)]">
         <div className="w-full max-w-[800px]">
           <PriceBox
             rows={priceBoxRows}
