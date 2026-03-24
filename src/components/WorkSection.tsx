@@ -6,7 +6,7 @@ import { MaterialEntry, MaterialClickData } from './Material'
 import { AnimatedHeight } from './AnimatedHeight'
 import { AnimatedPrice } from './AnimatedPrice'
 import { ItemPopup, PopupData } from './ItemPopup'
-import { getWorkDescription, getMaterialDescription, getMaterialSpecs } from '../descriptions'
+import { getWorkDescription, getMaterialDescription, getMaterialSpecs, detectGender } from '../descriptions'
 import { registerPopup, closeOtherPopups } from '../popupBus'
 
 type WorkSectionProps = {
@@ -151,7 +151,7 @@ export function WorkSection({
       name: data.name,
       price: data.price,
       included: data.active,
-      gender: 'f',
+      gender: detectGender(data.name),
       description: getWorkDescription(data.name),
       onIncludedChange: (v) => {
         setPopupData(prev => prev ? { ...prev, included: v } : null)
@@ -172,7 +172,7 @@ export function WorkSection({
       unitPrice: data.unitPrice,
       quantity: data.quantity,
       included: data.active,
-      gender: 'm',
+      gender: detectGender(data.name),
       description: getMaterialDescription(data.name),
       specs: getMaterialSpecs(data.name),
       onQuantityChange: (qty) => {

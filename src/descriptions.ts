@@ -109,6 +109,14 @@ const SPEC_LABELS: Record<string, string> = {
   width: 'Ширина',
 }
 
+/** Определяет грамматический род по последнему слову русского названия */
+export function detectGender(name: string): 'f' | 'm' | 'n' {
+  const last = name.trim().split(/\s+/).pop()?.toLowerCase() ?? ''
+  if (/[ое]$/.test(last)) return 'n'
+  if (/[ая]$/.test(last)) return 'f'
+  return 'm'
+}
+
 /** Возвращает отформатированное описание работы для попапа (без заголовка) */
 export function getWorkDescription(name: string): string | undefined {
   const w = findWork(name)

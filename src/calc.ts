@@ -53,7 +53,7 @@ export function buildCat1({ S, state, plan, hIdx, Kr = 1 }: CalcParams): UnitSec
   ]
 
   // 2. Подготовка стен
-  const prepWorks: { workName: string; price: number }[] = []
+  const prepWorks: { workName: string; price: number; description?: string }[] = []
   const prepMats: MaterialEntry[] = []
 
   if (state === 2) {

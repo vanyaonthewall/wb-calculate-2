@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
-import { getMaterialDescription, getMaterialSpecs } from '../descriptions'
+import { getMaterialDescription, getMaterialSpecs, detectGender } from '../descriptions'
 import { registerPopup, closeOtherPopups } from '../popupBus'
 import { Icon } from './Icon'
 import { Toggle } from './Toggle'
@@ -193,7 +193,7 @@ export function CalculationUnit({
       unitPrice: data.unitPrice,
       quantity: data.quantity,
       included: data.active,
-      gender: 'f',
+      gender: detectGender(data.name),
       showDownload: true,
       description: getMaterialDescription(data.name),
       specs: getMaterialSpecs(data.name),

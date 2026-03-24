@@ -8,7 +8,7 @@ export type PopupData = {
   name: string
   price: number
   included: boolean
-  gender: 'f' | 'm'
+  gender: 'f' | 'm' | 'n'
   description?: string
   specs?: Array<{ label: string; value: string }>
   unitPrice?: number
@@ -28,7 +28,8 @@ type ItemPopupProps = {
 export function ItemPopup({ data, onClose }: ItemPopupProps) {
   if (!data) return null
 
-  const { name, included, description, specs, unitPrice, quantity, showDownload, onQuantityChange, onIncludedChange } = data
+  const { name, gender, included, description, specs, unitPrice, quantity, showDownload, onQuantityChange, onIncludedChange } = data
+  const includedLabel = gender === 'f' ? 'Включена в стоимость' : gender === 'n' ? 'Включено в стоимость' : 'Включён в стоимость'
 
   const hasMaterialQty = unitPrice !== undefined && quantity !== undefined
   const hasBottomSection = true
@@ -68,7 +69,7 @@ export function ItemPopup({ data, onClose }: ItemPopupProps) {
         >
           <Toggle checked={included} onChange={onIncludedChange} />
           <p className="flex-1 font-inter font-medium text-[length:var(--f-size-m,18px)] leading-[var(--f-lh-m,24px)] text-[color:var(--grey-850,#313131)] whitespace-nowrap">
-            Включена в стоимость
+            {includedLabel}
           </p>
         </div>
       </div>
