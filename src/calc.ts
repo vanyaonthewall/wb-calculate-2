@@ -9,6 +9,7 @@ export interface CalcParams {
   plan: boolean   // свободная планировка
   hIdx: number    // 0=до 2.5 м, 1=2.85 м, 2=от 3.25 м
   Kr?: number     // regional coefficient (default 1.0)
+  kZone?: number  // доля клиентской зоны от общей площади (default 0.65)
 }
 
 const H_VALS   = [2.5, 2.85, 3.25] as const
@@ -18,7 +19,7 @@ const K_FL     = [0.0, 1.0, 1.0] as const
 const K_CL     = [0.3, 0.7, 1.0] as const
 const K_ZONE   = 0.65
 
-function geo(S: number, state: number, hIdx: number) {
+function geo(S: number, state: number, hIdx: number, kZone: number = K_ZONE) {
   const H   = H_VALS[hIdx]
   const Kh  = K_HEIGHT[hIdx]
   const Kst = K_ST[state]
@@ -26,10 +27,10 @@ function geo(S: number, state: number, hIdx: number) {
   const Kcl = K_CL[state]
   const P   = 4 * Math.sqrt(S) * 1.1
   const Sw  = P * H
-  const Swc = Sw * K_ZONE
-  const Sws = Sw * (1 - K_ZONE)
-  const Sfc = S * K_ZONE
-  const Sfs = S * (1 - K_ZONE)
+  const Swc = Sw * kZone
+  const Sws = Sw * (1 - kZone)
+  const Sfc = S * kZone
+  const Sfs = S * (1 - kZone)
   const Sc  = S
   const Sp  = H * Math.sqrt(S) * 0.5
   const Nfit = Math.max(2, Math.floor(S / 25))
@@ -44,8 +45,8 @@ const qty = (n: number) => Math.max(1, Math.ceil(n))
 
 // ─── Category 1: Внутренняя отделка ──────────────────────────────────────────
 
-export function buildCat1({ S, state, plan, hIdx, Kr = 1 }: CalcParams): UnitSection[] {
-  const g = geo(S, state, hIdx)
+export function buildCat1({ S, state, plan, hIdx, Kr = 1, kZone = K_ZONE }: CalcParams): UnitSection[] {
+  const g = geo(S, state, hIdx, kZone)
 
   // 1. Демонтаж старого покрытия
   const demolishWorks = [
@@ -229,8 +230,8 @@ export function buildCat1({ S, state, plan, hIdx, Kr = 1 }: CalcParams): UnitSec
 
 // ─── Category 2: Электрика и свет ────────────────────────────────────────────
 
-export function buildCat2({ S, state, hIdx, Kr = 1 }: CalcParams): UnitSection[] {
-  const g = geo(S, state, hIdx)
+export function buildCat2({ S, state, hIdx, Kr = 1, kZone = K_ZONE }: CalcParams): UnitSection[] {
+  const g = geo(S, state, hIdx, kZone)
   const Nlc = g.Nlc
   const Nls = g.Nls
 
@@ -325,8 +326,8 @@ export function buildCat2({ S, state, hIdx, Kr = 1 }: CalcParams): UnitSection[]
 
 // ─── Category 3: Безопасность и IT ───────────────────────────────────────────
 
-export function buildCat3({ S, state, hIdx, Kr = 1 }: CalcParams): UnitSection[] {
-  const g = geo(S, state, hIdx)
+export function buildCat3({ S, state, hIdx, Kr = 1, kZone = K_ZONE }: CalcParams): UnitSection[] {
+  const g = geo(S, state, hIdx, kZone)
   const Ncam = g.Ncam
   return [
     {

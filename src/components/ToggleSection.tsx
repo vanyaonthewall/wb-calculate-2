@@ -1,14 +1,6 @@
 import { useState } from 'react'
 import { Toggle } from './Toggle'
 
-type ToggleSectionProps = {
-  checked?: boolean
-  onChange?: (checked: boolean) => void
-  title?: string
-  description?: string
-  className?: string
-}
-
 export function ToggleSection({
   checked = true,
   onChange,
@@ -37,7 +29,9 @@ export function ToggleSection({
       onMouseLeave={() => setHovered(false)}
       onClick={() => onChange?.(!checked)}
     >
-      <Toggle checked={checked} onChange={onChange} />
+      <span className="pointer-events-none">
+        <Toggle checked={checked} />
+      </span>
       <div className="flex flex-col gap-[var(--gap-3xs,4px)] flex-1 min-w-0">
         <p className="font-inter font-medium text-[length:var(--f-size-m,18px)] leading-[var(--f-lh-m,24px)] text-[color:var(--grey-850,#313131)] whitespace-nowrap">
           {title}

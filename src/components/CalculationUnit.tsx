@@ -282,7 +282,7 @@ export function CalculationUnit({
     >
 
       {/* Header */}
-      <div className="flex items-center w-full gap-[var(--gap-2xs,8px)] px-[var(--pad-s,16px)]">
+      <div className="flex items-center w-full gap-[var(--gap-2xs,8px)] px-[var(--pad-s,16px)] py-[var(--inset-m,12px)]">
 
         {/* Тогл слева (версия 2) */}
         {toggleLeft && (
@@ -315,7 +315,7 @@ export function CalculationUnit({
             <Icon name="ic-chevron" size={24} />
           </span>
 
-          <div className="shrink-0 w-[40px] h-[40px] rounded-[var(--round-s,12px)] overflow-hidden">
+          <div className="shrink-0 w-6 h-6 rounded-[var(--round-xs,10px)] overflow-hidden">
             {imageUrl && <img src={imageUrl} alt={name} className="w-full h-full object-cover" />}
           </div>
 
@@ -329,7 +329,10 @@ export function CalculationUnit({
         </button>
 
         {/* Правая часть: цена + тогл (версия 1) */}
-        <div className="flex items-center shrink-0 gap-[var(--gap-2xs,8px)]">
+        <div
+          className="flex items-center shrink-0 gap-[var(--gap-2xs,8px)] cursor-pointer"
+          onClick={() => { const next = !toggle; if (next) handleToggleOn(); setToggle(next) }}
+        >
           <AnimatedPrice
             value={unitTotal}
             className="font-inter font-semibold text-[length:var(--f-size-s,16px)] leading-[var(--f-lh-m,24px)] w-[85px] text-right"
@@ -337,6 +340,7 @@ export function CalculationUnit({
           />
           {!toggleLeft && (
             <Toggle
+              size="lg"
               checked={toggle}
               onChange={v => {
                 if (v) handleToggleOn()

@@ -190,7 +190,7 @@ export function WorkSection({
 
   const header = (
     <div className="flex flex-col gap-[var(--gap-2xs,8px)] px-[var(--pad-s,16px)] py-[var(--gap-s,16px)] w-full" style={{ backgroundColor: headerBg }}>
-      <div className="flex items-start w-full gap-[var(--gap-2xs,8px)]">
+      <div className="sub-header-row flex items-start w-full gap-[var(--gap-2xs,8px)]">
         {/* Тогл слева (версия 2) */}
         {toggleLeft && (
           <div className="shrink-0 self-center" onClick={e => e.stopPropagation()}>
@@ -204,8 +204,8 @@ export function WorkSection({
           {name}
         </p>
         <div
-          className="flex items-center gap-[var(--gap-3xs,4px)] shrink-0 self-start"
-          onClick={e => e.stopPropagation()}
+          className="flex items-center gap-[var(--gap-3xs,4px)] shrink-0 self-start cursor-pointer"
+          onClick={e => { e.stopPropagation(); onToggle?.(!active) }}
         >
           <AnimatedPrice
             value={displayTotal}

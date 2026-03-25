@@ -68,7 +68,7 @@ export function Material({
       >
         <div
           className="shrink-0 w-[72px] h-[72px] rounded-[var(--round-s,12px)] overflow-hidden transition-colors flex items-center justify-center"
-          style={{ backgroundColor: leftHovered && active ? 'var(--grey-300, #c2c2c2)' : 'var(--grey-150, #e0e0e0)' }}
+          style={{ backgroundColor: !active ? 'var(--grey-150, #e0e0e0)' : leftHovered ? 'var(--grey-150, #e0e0e0)' : 'var(--grey-100, #ebebeb)' }}
         >
           {imageUrl ? (
             <img src={imageUrl} alt={materialText} className="w-full h-full object-cover" />

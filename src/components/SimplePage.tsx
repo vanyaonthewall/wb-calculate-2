@@ -1,7 +1,6 @@
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Input } from './Input'
 import { Chip } from './Chip'
-import { SegmentControl } from './SegmentControl'
 import { IcControl } from './IcControl'
 import { Ic } from './Ic'
 import { ToggleSection } from './ToggleSection'
@@ -19,7 +18,13 @@ import { buildCat1, buildCat2, buildCat3, buildCat4, buildMebel, buildCat6 } fro
 
 const AREA_PRESETS = [25, 35, 50, 75]
 const CONDITIONS = ['Косметика', 'White box', 'Бетон']
-const CEILING_OPTIONS = ['до 2,7 м', '3 м', 'от 3,5']
+const CEILING_PRESETS = ['2700', '3000', '3500']
+
+function ceilingIndex(mm: number): number {
+  if (mm < 2850) return 0
+  if (mm < 3250) return 1
+  return 2
+}
 
 const CATEGORIES = [
   { name: 'Внутренняя отделка',  imageUrl: wallImg   },
@@ -65,20 +70,48 @@ export function SimplePage() {
   const [areaStr, setAreaStr] = useState('35')
   const [condition, setCondition] = useState(0)
   const [freeLayout, setFreeLayout] = useState(false)
-  const [ceiling, setCeiling] = useState(1)
+  const [ceilingMm, setCeilingMm] = useState('3000')
   const [layoutVersion, setLayoutVersion] = useState<1 | 2>(1)
+  const [clientStr, setClientStr] = useState(String(Math.round(35 * 0.65)))
+  const [storageStr, setStorageStr] = useState(String(Math.round(35 * 0.35)))
 
   const area = Math.max(1, parseFloat(areaStr.replace(',', '.')) || 0)
 
+  useEffect(() => {
+    setClientStr(String(Math.round(area * 0.65)))
+    setStorageStr(String(Math.round(area * 0.35)))
+  }, [area])
+
   const handleDecrement = () => setAreaStr(String(Math.max(1, area - 1)))
   const handleIncrement = () => setAreaStr(String(area + 1))
+
+  const clientVal = Math.max(0, parseFloat(clientStr.replace(',', '.')) || 0)
+  const storageVal = Math.max(0, parseFloat(storageStr.replace(',', '.')) || 0)
+
+  const handleClientChange = (val: string) => {
+    setClientStr(val)
+    const c = Math.max(0, parseFloat(val.replace(',', '.')) || 0)
+    setStorageStr(String(Math.max(0, Math.round(area - c))))
+  }
+  const handleStorageChange = (val: string) => {
+    setStorageStr(val)
+    const s = Math.max(0, parseFloat(val.replace(',', '.')) || 0)
+    setClientStr(String(Math.max(0, Math.round(area - s))))
+  }
+
+  const ceilingVal = parseInt(ceilingMm) || 3000
+  const handleCeilingDecrement = () => setCeilingMm(String(Math.max(2000, ceilingVal - 100)))
+  const handleCeilingIncrement = () => setCeilingMm(String(ceilingVal + 100))
+
+  const ceiling = ceilingIndex(parseInt(ceilingMm) || 3000)
 
   const calcParams = useMemo(() => ({
     S: area,
     state: condition,
     plan: freeLayout,
     hIdx: ceiling,
-  }), [area, condition, freeLayout, ceiling])
+    kZone: Math.min(1, Math.max(0, clientVal / area)),
+  }), [area, condition, freeLayout, ceiling, clientVal])
 
   const cat1Sections = useMemo(() => buildCat1(calcParams), [calcParams])
   const cat2Sections = useMemo(() => buildCat2(calcParams), [calcParams])
@@ -182,6 +215,34 @@ export function SimplePage() {
                   ))}
                 </div>
               </div>
+
+              {/* Клиентская зона + Склад */}
+              <div className="flex flex-col min-[480px]:flex-row gap-[var(--gap-m,32px)]">
+                <div className="flex-1 min-w-0 flex flex-col gap-[var(--gap-3xs,4px)]">
+                  <p className="font-inter font-normal text-[length:var(--f-size-xs,14px)] leading-[var(--f-lh-s,20px)] text-[color:var(--grey-600,#7b7b7b)]">
+                    Клиентская зона
+                  </p>
+                  <div className="flex items-start gap-[var(--gap-2xs,8px)]">
+                    <div className="flex-1 min-w-0">
+                      <Input value={clientStr} onChange={handleClientChange} placeholder="23" unit="м²" />
+                    </div>
+                    <IcControl icon="ic-minus" color="grey" size="m" onClick={() => handleClientChange(String(Math.max(0, clientVal - 1)))} />
+                    <IcControl icon="ic-plus" color="grey" size="m" onClick={() => handleClientChange(String(clientVal + 1))} />
+                  </div>
+                </div>
+                <div className="flex-1 min-w-0 flex flex-col gap-[var(--gap-3xs,4px)]">
+                  <p className="font-inter font-normal text-[length:var(--f-size-xs,14px)] leading-[var(--f-lh-s,20px)] text-[color:var(--grey-600,#7b7b7b)]">
+                    Склад
+                  </p>
+                  <div className="flex items-start gap-[var(--gap-2xs,8px)]">
+                    <div className="flex-1 min-w-0">
+                      <Input value={storageStr} onChange={handleStorageChange} placeholder="12" unit="м²" />
+                    </div>
+                    <IcControl icon="ic-minus" color="grey" size="m" onClick={() => handleStorageChange(String(Math.max(0, storageVal - 1)))} />
+                    <IcControl icon="ic-plus" color="grey" size="m" onClick={() => handleStorageChange(String(storageVal + 1))} />
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* 2. Свободная планировка */}
@@ -191,7 +252,30 @@ export function SimplePage() {
               description="Включите, если помещение без комнат и нужна перегородка"
             />
 
-            {/* 3. Текущее состояние */}
+            {/* 3. Высота потолков */}
+            <div className="flex flex-col gap-[var(--gap-xs,12px)]">
+              <p className="font-inter font-medium text-[length:var(--f-size-m,18px)] leading-[var(--f-lh-m,24px)] text-[color:var(--grey-850,#313131)]">
+                Высота потолков
+              </p>
+              <div className="flex flex-col gap-[var(--gap-xs,12px)]">
+                <div className="flex items-start gap-[var(--gap-2xs,8px)]">
+                  <div className="flex-1 min-w-0">
+                    <Input value={ceilingMm} onChange={setCeilingMm} placeholder="3000" unit="мм" />
+                  </div>
+                  <IcControl icon="ic-minus" color="grey" size="m" onClick={handleCeilingDecrement} />
+                  <IcControl icon="ic-plus" color="grey" size="m" onClick={handleCeilingIncrement} />
+                </div>
+                <div className="flex gap-[var(--gap-2xs,8px)] flex-wrap">
+                  {CEILING_PRESETS.map(p => (
+                    <Chip key={p} color="grey" onClick={() => setCeilingMm(p)}>
+                      {p}
+                    </Chip>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* 4. Текущее состояние */}
             <div className="flex flex-col gap-[var(--gap-xs,12px)]">
               <div className="flex items-center gap-[var(--gap-2xs,8px)]">
                 <p className="font-inter font-medium text-[length:var(--f-size-m,18px)] leading-[var(--f-lh-m,24px)] text-[color:var(--grey-850,#313131)]">
@@ -199,21 +283,35 @@ export function SimplePage() {
                 </p>
                 <Ic icon="ic-question" />
               </div>
-              <SegmentControl options={CONDITIONS} value={condition} onChange={setCondition} />
-            </div>
-
-            {/* 4. Высота потолков */}
-            <div className="flex flex-col gap-[var(--gap-xs,12px)]">
-              <p className="font-inter font-medium text-[length:var(--f-size-m,18px)] leading-[var(--f-lh-m,24px)] text-[color:var(--grey-850,#313131)]">
-                Высота потолков
-              </p>
-              <SegmentControl options={CEILING_OPTIONS} value={ceiling} onChange={setCeiling} />
+              <div className="flex flex-col gap-[var(--gap-2xs,8px)]">
+                {CONDITIONS.map((opt, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCondition(i)}
+                    className="flex items-center gap-[var(--gap-s,16px)] w-full p-[var(--gap-s,16px)] rounded-[var(--round-m,16px)] bg-[var(--grey-0,white)] cursor-pointer text-left transition-colors hover:bg-[var(--grey-50,#f5f5f5)]"
+                  >
+                    <div className={
+                      'shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ' +
+                      (condition === i
+                        ? 'border-[var(--purple-500,#9744eb)]'
+                        : 'border-[var(--grey-300,#c2c2c2)]')
+                    }>
+                      {condition === i && (
+                        <div className="w-2.5 h-2.5 rounded-full bg-[var(--purple-500,#9744eb)]" />
+                      )}
+                    </div>
+                    <span className="font-inter font-medium text-[length:var(--f-size-m,18px)] leading-[var(--f-lh-m,24px)] text-[color:var(--grey-850,#313131)]">
+                      {opt}
+                    </span>
+                  </button>
+                ))}
+              </div>
             </div>
 
           </div>
 
           {/* Заголовок раздела сметы */}
-          <div className="flex items-center justify-between gap-[var(--gap-2xs,8px)] px-[var(--pad-m,24px)] pt-[40px] pb-[var(--gap-3xs,4px)] mx-[var(--gap-3xs,4px)]">
+          <div className="flex items-center justify-between gap-[var(--gap-2xs,8px)] px-[var(--pad-l,32px)] pt-[40px] pb-[var(--gap-3xs,4px)] mx-[var(--gap-3xs,4px)]">
             <p className="font-inter font-semibold text-[length:var(--f-size-xl,30px)] leading-[var(--f-lh-l,40px)] text-[color:var(--grey-850,#313131)]">
               Расчет
             </p>

@@ -16,6 +16,8 @@
 
 .no-scrollbar::-webkit-scrollbar { display: none; }
 
+[data-mode="tiny"] .sub-header-row { gap: 12px; }
+
 /* ═══════════════════════════════════════
    DESIGN TOKENS — CSS Variables
    Source: Comfort.tokens.json (default)

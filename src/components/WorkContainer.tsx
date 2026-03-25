@@ -67,7 +67,7 @@ export function WorkContainer({
       style={{ backgroundColor: active ? 'var(--grey-0, white)' : 'var(--grey-100, #ebebeb)' }}
     >
       {/* Заголовок */}
-      <div className="flex items-center w-full gap-[var(--gap-2xs,8px)]">
+      <div className="sub-header-row flex items-center w-full gap-[var(--gap-2xs,8px)]">
         {toggleLeft && <Toggle checked={active} onChange={v => onToggle?.(v)} />}
         <p
           className="flex-1 font-inter font-semibold text-[length:var(--f-size-s,16px)] leading-[var(--f-lh-m,24px)] truncate"
@@ -75,7 +75,10 @@ export function WorkContainer({
         >
           Работа бригады
         </p>
-        <div className="flex items-center gap-[var(--gap-2xs,8px)] shrink-0">
+        <div
+          className="flex items-center gap-[var(--gap-2xs,8px)] shrink-0 cursor-pointer"
+          onClick={() => onToggle?.(!active)}
+        >
           <AnimatedPrice
             value={subTotal}
             className="font-inter font-semibold text-[length:var(--f-size-s,16px)] leading-[var(--f-lh-m,24px)] w-[85px] text-right"
