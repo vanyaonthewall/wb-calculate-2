@@ -340,7 +340,6 @@ export function CalculationUnit({
           />
           {!toggleLeft && (
             <Toggle
-              size="lg"
               checked={toggle}
               onChange={v => {
                 if (v) handleToggleOn()

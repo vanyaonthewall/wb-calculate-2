@@ -1,6 +1,14 @@
 import { useState } from 'react'
 import { Toggle } from './Toggle'
 
+type ToggleSectionProps = {
+  checked?: boolean
+  onChange?: (checked: boolean) => void
+  title?: string
+  description?: string
+  className?: string
+}
+
 export function ToggleSection({
   checked = true,
   onChange,
